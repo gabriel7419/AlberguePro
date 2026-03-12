@@ -17,7 +17,7 @@
 
 ## 📋 Sobre o Projeto
 
-O **AlberguePro** é um sistema web desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso de Sistemas de Informação da **UniALFA** (2025). A plataforma foi projetada para apoiar a gestão operacional de albergues e casas de acolhimento, centralizando o controle de acolhidos, estoque, patrimônio e leitos em uma única interface.
+O **AlberguePro** é um sistema web desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso de Sistemas para Internet da **UniALFA** (2025). A plataforma foi projetada para apoiar a gestão operacional de albergues e casas de acolhimento, centralizando o controle de acolhidos, estoque, patrimônio e leitos em uma única interface.
 
 ### ✨ Funcionalidades
 
