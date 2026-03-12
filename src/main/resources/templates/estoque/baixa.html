@@ -1,243 +1,138 @@
 <!-- Tela de baixa de estoque -->
 <!DOCTYPE html>
-<!-- Puxa o layout principal -->
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
-<head>
-</head>
+<head><title>Baixa de Estoque</title></head>
 <body>
 <section>
-    <!-- Banner de erro customizado (inicialmente oculto) -->
-    <div id="errorBanner" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span id="errorBannerMessage"></span>
-        <button type="button" class="close" onclick="closeBanner('errorBanner')">
-            <span aria-hidden="true">&times;</span>
-        </button>
+    <!-- Alerts -->
+    <div id="errorBanner" class="alert alert-danger d-flex align-items-center gap-2 mb-3" style="display:none!important" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <span id="errorBannerMsg"></span>
+        <button type="button" class="btn-close ms-auto" onclick="document.getElementById('errorBanner').style.display='none'"></button>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger d-flex align-items-center gap-2 mb-3">
+        <i class="bi bi-exclamation-triangle-fill"></i><span th:text="${errorMessage}"></span>
+    </div>
+    <div th:if="${successMessage}" class="alert alert-success d-flex align-items-center gap-2 mb-3">
+        <i class="bi bi-check-circle-fill"></i><span th:text="${successMessage}"></span>
     </div>
 
-    <!-- Mensagem de erro do servidor -->
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span th:text="${errorMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    
-    <!-- Mensagem de sucesso -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle"></i>
-        <span th:text="${successMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <!-- Filtros Colapsáveis -->
-    <div class="card card-primary collapsed-card mb-3">
-        <div class="card-header card-header-blue">
-            <h3 class="card-title">Filtros</h3>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-header" style="cursor:pointer" onclick="toggleFilters()">
+            <h3 class="card-title"><i class="bi bi-funnel me-2 text-primary"></i>Filtros</h3>
+            <button type="button" class="btn btn-sm btn-secondary ms-auto"><i class="bi bi-chevron-down" id="filterChevron"></i></button>
         </div>
-        <div class="card-body" style="display: none;">
+        <div class="card-body" id="filterBody" style="display:none">
             <form th:action="@{/estoque/baixa}" method="get">
-                <div class="row">
+                <div class="row g-3">
                     <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="filtro">Nome do Produto:</label>
-                            <input type="text" name="filtro" id="filtro" class="form-control" placeholder="Buscar produto por nome..." th:value="${filtro}">
-                        </div>
+                        <label class="form-label">Nome do Produto</label>
+                        <input type="text" name="filtro" id="filtro" class="form-control" placeholder="Buscar produto..." th:value="${filtro}">
                     </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="tipo">Tipo:</label>
-                            <select id="tipo" name="tipo" class="form-control">
-                                <option value="">Todos</option>
-                                <option value="Alimento" th:selected="${tipo == 'Alimento'}">Alimento</option>
-                                <option value="Higiene" th:selected="${tipo == 'Higiene'}">Higiene</option>
-                                <option value="Limpeza" th:selected="${tipo == 'Limpeza'}">Limpeza</option>
-                            </select>
-                        </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Tipo</label>
+                        <select id="tipo" name="tipo" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="Alimento" th:selected="${tipo == 'Alimento'}">Alimento</option>
+                            <option value="Higiene"  th:selected="${tipo == 'Higiene'}">Higiene</option>
+                            <option value="Limpeza"  th:selected="${tipo == 'Limpeza'}">Limpeza</option>
+                        </select>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label>&nbsp;</label>
-                            <div class="btn-group btn-block">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search"></i> Filtrar
-                                </button>
-                                <a th:href="@{/estoque/baixa}" class="btn btn-secondary">
-                                    <i class="fas fa-times"></i> Limpar
-                                </a>
-                            </div>
-                        </div>
+                    <div class="col-md-3 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-search"></i> Filtrar</button>
+                        <a th:href="@{/estoque/baixa}" class="btn btn-secondary"><i class="bi bi-x"></i></a>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Tabela com os produtos -->
-    <div class="card card-primary">
+    <!-- Tabela -->
+    <div class="card">
         <div class="card-header card-header-blue">
             <h3 class="card-title">Baixa em Produtos do Estoque</h3>
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered">
-                <thead class="thead-blue">
-                <tr>
-                    <th>Nome</th>
-                    <th style="width: 120px;">Qtd. Atual</th>
-                    <th style="width: 150px;">Unidade</th>
-                    <th style="width: 250px;">Quantidade para Baixa</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- Loop pra mostrar cada produto -->
-                <tr th:each="produto : ${produtos}">
-                    <td th:text="${produto.nome}">Arroz</td>
-                    <td th:text="${produto.quantidade}">50</td>
-                    <td th:text="${produto.unidade.nome}">kg</td>
-                    <td>
-                        <!-- Form pra dar baixa em cada produto -->
-                        <form th:action="@{/estoque/dar-baixa}" method="post" class="baixa-form" 
-                              th:data-produto-nome="${produto.nome}" 
-                              th:data-quantidade-max="${produto.quantidade}">
-                            <!-- ID do produto escondido -->
-                            <input type="hidden" name="produtoId" th:value="${produto.id}" />
-                            <div class="input-group" style="width: 100%;">
-                                <!-- Campo pra por a quantidade da baixa -->
-                                <input type="number" name="quantidade" class="form-control quantidade-input" 
-                                       placeholder="0" min="1" th:max="${produto.quantidade}" style="flex: 1;">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-success">Salvar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th style="width:120px">Qtd. Atual</th>
+                            <th style="width:150px">Unidade</th>
+                            <th style="width:260px">Quantidade para Baixa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="produto : ${produtos}">
+                            <td th:text="${produto.nome}">Arroz</td>
+                            <td th:text="${produto.quantidade}">50</td>
+                            <td th:text="${produto.unidade.nome}">kg</td>
+                            <td>
+                                <form th:action="@{/estoque/dar-baixa}" method="post" class="baixa-form"
+                                      th:data-produto-nome="${produto.nome}"
+                                      th:data-quantidade-max="${produto.quantidade}">
+                                    <input type="hidden" name="produtoId" th:value="${produto.id}">
+                                    <div class="input-group">
+                                        <input type="number" name="quantidade" class="form-control quantidade-input"
+                                               placeholder="0" min="1" th:max="${produto.quantidade}">
+                                        <button type="submit" class="btn btn-success">Salvar</button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- Paginação -->
             <div th:replace="fragments/pagination :: pagination"></div>
         </div>
     </div>
 </section>
-<style>
-    /* Garantir alinhamento consistente dos inputs de quantidade */
-    .baixa-form {
-        margin: 0;
-        width: 100%;
-    }
-    
-    .baixa-form .input-group {
-        display: flex;
-        width: 100%;
-    }
-    
-    .baixa-form .quantidade-input {
-        min-width: 0;
-        flex: 1 1 auto;
-    }
-    
-    .baixa-form .btn {
-        white-space: nowrap;
-    }
-</style>
 <script>
-    // Função para fechar o banner
-    function closeBanner(bannerId) {
-        document.getElementById(bannerId).style.display = 'none';
+function toggleFilters() {
+    var body = document.getElementById('filterBody');
+    var icon = document.getElementById('filterChevron');
+    var open = body.style.display !== 'none';
+    body.style.display = open ? 'none' : 'block';
+    icon.className = open ? 'bi bi-chevron-down' : 'bi bi-chevron-up';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var filtro = document.getElementById('filtro');
+    var tipo   = document.getElementById('tipo');
+    if ((filtro && filtro.value) || (tipo && tipo.value)) {
+        document.getElementById('filterBody').style.display = 'block';
+        document.getElementById('filterChevron').className = 'bi bi-chevron-up';
     }
 
-    // Função para mostrar banner de erro
-    function showErrorBanner(message) {
-        const banner = document.getElementById('errorBanner');
-        const messageSpan = document.getElementById('errorBannerMessage');
-        messageSpan.textContent = message;
-        banner.style.display = 'block';
-        
-        // Scroll suave até o topo
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        
-        // Auto-fechar após 5 segundos
-        setTimeout(() => {
-            banner.style.display = 'none';
-        }, 5000);
-    }
-
-    // Validação customizada para os formulários de baixa
-    document.addEventListener('DOMContentLoaded', function() {
-        const forms = document.querySelectorAll('.baixa-form');
-        
-        forms.forEach(form => {
-            form.addEventListener('submit', function(e) {
-                const input = form.querySelector('.quantidade-input');
-                const quantidade = parseInt(input.value);
-                const quantidadeMax = parseInt(form.getAttribute('data-quantidade-max'));
-                const produtoNome = form.getAttribute('data-produto-nome');
-                
-                // Verificar se o campo está vazio
-                if (!input.value || input.value === '') {
-                    e.preventDefault();
-                    showErrorBanner('Por favor, informe a quantidade para baixa do produto "' + produtoNome + '".');
-                    input.focus();
-                    return false;
-                }
-                
-                // Verificar se é um número válido
-                if (isNaN(quantidade) || quantidade <= 0) {
-                    e.preventDefault();
-                    showErrorBanner('A quantidade deve ser um número maior que zero para o produto "' + produtoNome + '".');
-                    input.focus();
-                    return false;
-                }
-                
-                // Verificar se não excede a quantidade disponível
-                if (quantidade > quantidadeMax) {
-                    e.preventDefault();
-                    showErrorBanner('A quantidade informada (' + quantidade + ') excede a quantidade disponível (' + quantidadeMax + ') do produto "' + produtoNome + '".');
-                    input.focus();
-                    return false;
-                }
-            });
+    document.querySelectorAll('.baixa-form').forEach(function(form) {
+        form.addEventListener('submit', function(e) {
+            var input = form.querySelector('.quantidade-input');
+            var qty = parseInt(input.value);
+            var max = parseInt(form.getAttribute('data-quantidade-max'));
+            var nome = form.getAttribute('data-produto-nome');
+            if (!input.value || isNaN(qty) || qty <= 0) {
+                e.preventDefault();
+                showError('Informe uma quantidade válida para "' + nome + '".');
+                return;
+            }
+            if (qty > max) {
+                e.preventDefault();
+                showError('Quantidade (' + qty + ') excede o disponível (' + max + ') para "' + nome + '".');
+            }
         });
-
-        // Auto-fechar mensagens de sucesso/erro do servidor após 5 segundos
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert:not(#errorBanner)');
-            alerts.forEach(alert => {
-                if (alert.classList.contains('show')) {
-                    alert.classList.remove('show');
-                    setTimeout(() => alert.remove(), 300);
-                }
-            });
-        }, 5000);
     });
+});
 
-    // Mantém os filtros abertos se algum filtro estiver ativo
-    $(document).ready(function() {
-        var temFiltroAtivo = false;
-        
-        // Verifica se há filtros ativos
-        if ($('#filtro').val() || $('#tipo').val()) {
-            temFiltroAtivo = true;
-        }
-        
-        // Se houver filtro ativo, expande o card de filtros
-        if (temFiltroAtivo) {
-            $('.collapsed-card').removeClass('collapsed-card');
-            $('.collapsed-card .card-body').show();
-            $('.collapsed-card .btn-tool i').removeClass('fa-plus').addClass('fa-minus');
-        }
-    });
+function showError(msg) {
+    var banner = document.getElementById('errorBanner');
+    document.getElementById('errorBannerMsg').textContent = msg;
+    banner.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(function() { banner.style.display = 'none'; }, 5000);
+}
 </script>
 </body>
 </html>

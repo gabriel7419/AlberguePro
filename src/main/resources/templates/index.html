@@ -6,60 +6,53 @@
 <body>
 <section>
     <!-- Linha de Caixas de Informação -->
-    <div class="row mb-2">
-        <!-- Acolhidos Ativos -->
-        <div class="col-lg-3 col-6 mb-2">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3 th:text="${dashboard.totalAcolhidos}">0</h3>
-                    <p>Acolhidos Ativos</p>
+    <div class="row g-3 mb-4">
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card indigo">
+                <div class="stat-info">
+                    <div class="stat-number" th:text="${dashboard.totalAcolhidos}">0</div>
+                    <div class="stat-label">Acolhidos Ativos</div>
                 </div>
-                <div class="icon"><i class="fas fa-users"></i></div>
+                <i class="bi bi-people-fill stat-icon"></i>
             </div>
         </div>
-
-        <!-- Leitos -->
-        <div class="col-lg-3 col-6 mb-2">    
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3 th:text="${dashboard.leitosLivres} + ' / ' + ${dashboard.totalLeitos}">0 / 0</h3>
-                    <p>Leitos Livres</p>
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card teal">
+                <div class="stat-info">
+                    <div class="stat-number" th:text="${dashboard.leitosLivres} + ' / ' + ${dashboard.totalLeitos}">0 / 0</div>
+                    <div class="stat-label">Leitos Livres</div>
                 </div>
-                <div class="icon"><i class="fas fa-bed"></i></div>
+                <i class="bi bi-hospital stat-icon"></i>
             </div>
         </div>
-
-        <!-- Quartos Livres -->
-        <div class="col-lg-3 col-6 mb-2">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3 th:text="${dashboard.quartosLivres} + ' / ' + ${dashboard.totalQuartos}">0 / 0</h3>
-                    <p>Quartos Livres</p>
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card amber">
+                <div class="stat-info">
+                    <div class="stat-number" th:text="${dashboard.quartosLivres} + ' / ' + ${dashboard.totalQuartos}">0 / 0</div>
+                    <div class="stat-label">Quartos Livres</div>
                 </div>
-                <div class="icon"><i class="fas fa-door-open"></i></div>
+                <i class="bi bi-door-open-fill stat-icon"></i>
             </div>
         </div>
-
-        <!-- Total de Usuários -->
-        <div class="col-lg-3 col-6 mb-2">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3 th:text="${dashboard.totalUsuarios}">0</h3>
-                    <p>Usuários do Sistema</p>
+        <div class="col-lg-3 col-sm-6">
+            <div class="stat-card rose">
+                <div class="stat-info">
+                    <div class="stat-number" th:text="${dashboard.totalUsuarios}">0</div>
+                    <div class="stat-label">Usuários do Sistema</div>
                 </div>
-                <div class="icon"><i class="fas fa-user-shield"></i></div>
+                <i class="bi bi-shield-fill-check stat-icon"></i>
             </div>
         </div>
     </div>
 
     <!-- Linha dos Gráficos -->
-    <div class="row mb-2">
+    <div class="row g-3">
         <!-- Coluna 1 - Patrimônio e Estoque -->
-        <div class="col-lg-4 mb-2">
+        <div class="col-lg-4">
             <!-- Gráfico de Patrimônio -->
-            <div class="card card-primary card-outline mb-2">
+            <div class="card mb-3">
                 <div class="card-header">
-                    <h3 class="card-title">Patrimônio por Status</h3>
+                    <h3 class="card-title"><i class="bi bi-pie-chart me-2 text-primary"></i>Patrimônio por Status</h3>
                 </div>
                 <div class="card-body">
                     <div id="chartPatrimonio" style="height: 260px;"></div>
@@ -70,9 +63,9 @@
             </div>
 
             <!-- Gráfico de Estoque Baixo -->
-            <div class="card card-danger card-outline">
+            <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Estoque Baixo (Top 5)</h3>
+                    <h3 class="card-title"><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Estoque Baixo (Top 5)</h3>
                 </div>
                 <div class="card-body">
                     <div id="chartEstoque" style="height: 260px;"></div>
@@ -84,609 +77,141 @@
         </div>
 
         <!-- Coluna 2 - Leitos -->
-        <div class="col-lg-4 mb-2">
-            <!-- Gráfico de Leitos -->
-            <div class="card card-info card-outline" style="height: calc(100% - 0.5rem);">
+        <div class="col-lg-4">
+            <div class="card h-100">
                 <div class="card-header">
-                    <h3 class="card-title">Situação dos Leitos</h3>
+                    <h3 class="card-title"><i class="bi bi-bar-chart me-2 text-info"></i>Situação dos Leitos</h3>
                 </div>
                 <div class="card-body">
-                    <div id="chartLeitos" style="height: 520px;"></div>
+                    <div id="chartLeitos" style="height: 560px;"></div>
                 </div>
             </div>
         </div>
 
         <!-- Coluna 3 - Evolução de Acolhimentos -->
-        <div class="col-lg-4 mb-2">
-            <!-- Gráfico de Evolução -->
-            <div class="card card-success card-outline" style="height: calc(100% - 0.5rem);">
+        <div class="col-lg-4">
+            <div class="card h-100">
                 <div class="card-header">
-                    <h3 class="card-title">Evolução de Acolhimentos (6 meses)</h3>
+                    <h3 class="card-title"><i class="bi bi-graph-up me-2 text-success"></i>Evolução de Acolhimentos (6 meses)</h3>
                 </div>
                 <div class="card-body">
-                    <div id="chartEvolucao" style="height: 520px;"></div>
+                    <div id="chartEvolucao" style="height: 560px;"></div>
                 </div>
             </div>
         </div>
     </div>
-
 </section>
 <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        // Função para obter cor de texto baseado no modo
         function getDataLabelColor() {
-            return document.body.classList.contains('dark-mode') ? '#fff' : '#000';
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#fff' : '#000';
         }
-        
-        // Função para obter cor de labels/categorias baseado no modo
         function getLabelColor() {
-            return document.body.classList.contains('dark-mode') ? '#e5e7eb' : '#6c757d';
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#94a3b8' : '#6c757d';
         }
-        
-        // Função para obter cor de títulos baseado no modo
         function getTitleColor() {
-            return document.body.classList.contains('dark-mode') ? '#f3f4f6' : '#343a40';
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? '#f1f5f9' : '#343a40';
         }
-        
-        // Função para obter tema do tooltip baseado no modo
         function getTooltipTheme() {
-            return document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
         }
-        
-        // Aplicar dark mode ANTES de criar os gráficos
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        if (darkMode && !document.body.classList.contains('dark-mode')) {
-            document.body.classList.add('dark-mode');
-        }
-        
-        // Variáveis para armazenar as instâncias dos gráficos
+
         var chartPatrimonio, chartLeitos, chartEstoque, chartEvolucao;
-        
+
         // Dados do Patrimônio
         var patrimonioData = /*[[${dashboard.patrimonioPorStatus}]]*/ {};
-        
+
         if (Object.keys(patrimonioData).length > 0) {
-            var patrimonioLabels = [];
-            var patrimonioValues = [];
-            var patrimonioColors = [];
-            
-            // Paleta completa de cores para status de patrimônio
+            var patrimonioLabels = [], patrimonioValues = [], patrimonioColors = [];
             var statusColors = {
-                'Em Uso': '#3498db',           // Azul suave
-                'Disponivel': '#2ecc71',       // Verde vibrante
-                'Em Manutencao': '#f39c12',    // Laranja/Amarelo
-                'Baixado': '#e74c3c',          // Vermelho
+                'Em Uso': '#4f46e5', 'Disponivel': '#10b981',
+                'Em Manutencao': '#f59e0b', 'Baixado': '#ef4444'
             };
-            
-            // Cores de fallback caso status não esteja no mapa
-            var fallbackColors = ['#8e44ad', '#c0392b', '#27ae60', '#d35400', '#2980b9', '#f1c40f'];
-            var fallbackIndex = 0;
-            
+            var fallbackColors = ['#8b5cf6', '#06b6d4', '#84cc16', '#f97316'];
+            var fi = 0;
             for (var key in patrimonioData) {
                 patrimonioLabels.push(key);
                 patrimonioValues.push(patrimonioData[key]);
-                
-                // Usar cor definida ou fallback
-                if (statusColors[key]) {
-                    patrimonioColors.push(statusColors[key]);
-                } else {
-                    patrimonioColors.push(fallbackColors[fallbackIndex % fallbackColors.length]);
-                    fallbackIndex++;
-                }
+                patrimonioColors.push(statusColors[key] || fallbackColors[fi++ % fallbackColors.length]);
             }
-            
-            var optionsPatrimonio = {
-                series: patrimonioValues,
-                chart: {
-                    type: 'donut',
-                    height: 260,
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    toolbar: {
-                        show: false
-                    }
-                },
-                labels: patrimonioLabels,
-                colors: patrimonioColors,
-                legend: {
-                    position: 'bottom',
-                    fontSize: '12px',
-                    fontWeight: 500,
-                    labels: {
-                        colors: getLabelColor()
-                    },
-                    markers: {
-                        width: 10,
-                        height: 10,
-                        radius: 3
-                    }
-                },
-                dataLabels: {
-                    enabled: true,
-                    formatter: function(val, opts) {
-                        return opts.w.config.series[opts.seriesIndex];
-                    },
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 'bold',
-                        colors: [getDataLabelColor()]
-                    },
-                    dropShadow: {
-                        enabled: false
-                    }
-                },
-                plotOptions: {
-                    pie: {
-                        donut: {
-                            size: '60%',
-                            labels: {
-                                show: true,
-                                name: {
-                                    show: true,
-                                    fontSize: '14px',
-                                    fontWeight: 600,
-                                    color: getTitleColor()
-                                },
-                                value: {
-                                    show: true,
-                                    fontSize: '20px',
-                                    fontWeight: 700,
-                                    color: document.body.classList.contains('dark-mode') ? '#60a5fa' : '#007bff'
-                                },
-                                total: {
-                                    show: true,
-                                    label: 'Total',
-                                    fontSize: '12px',
-                                    fontWeight: 600,
-                                    color: getLabelColor(),
-                                    formatter: function (w) {
-                                        return w.globals.seriesTotals.reduce((a, b) => a + b, 0)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                tooltip: {
-                    theme: getTooltipTheme(),
-                    y: {
-                        formatter: function(val) {
-                            return val + " itens";
-                        }
-                    }
-                }
-            };
-            
-            var chartPatrimonio = new ApexCharts(document.querySelector("#chartPatrimonio"), optionsPatrimonio);
+            chartPatrimonio = new ApexCharts(document.querySelector("#chartPatrimonio"), {
+                series: patrimonioValues, chart: { type: 'donut', height: 260, toolbar: { show: false } },
+                labels: patrimonioLabels, colors: patrimonioColors,
+                legend: { position: 'bottom', fontSize: '12px', labels: { colors: getLabelColor() } },
+                dataLabels: { enabled: true, formatter: function(val, opts) { return opts.w.config.series[opts.seriesIndex]; }, style: { colors: [getDataLabelColor()], fontWeight: 'bold' }, dropShadow: { enabled: false } },
+                plotOptions: { pie: { donut: { size: '60%', labels: { show: true, total: { show: true, label: 'Total', color: getLabelColor() } } } } },
+                tooltip: { theme: getTooltipTheme() }
+            });
             chartPatrimonio.render();
         }
-        
-        // Dados dos Leitos
+
+        // Leitos
         var leitosOcupados = /*[[${dashboard.leitosOcupados}]]*/ 0;
         var leitosLivres = /*[[${dashboard.leitosLivres}]]*/ 0;
-        
-        var optionsLeitos = {
-            series: [{
-                name: 'Quantidade',
-                data: [leitosOcupados, leitosLivres]
-            }],
-            chart: {
-                type: 'bar',
-                height: 520,
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                toolbar: {
-                    show: false
-                }
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    distributed: true,
-                    barHeight: '40%',
-                    dataLabels: {
-                        position: 'top'
-                    }
-                }
-            },
-            colors: ['#dc3545', '#28a745'],
-            dataLabels: {
-                enabled: true,
-                offsetX: 30,
-                style: {
-                    fontSize: '13px',
-                    fontWeight: 'bold',
-                    colors: [getDataLabelColor()]
-                }
-            },
-            xaxis: {
-                categories: ['Ocupados', 'Livres'],
-                title: {
-                    text: 'Quantidade',
-                    style: {
-                        fontSize: '13px',
-                        fontWeight: 600,
-                        color: getTitleColor()
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: getLabelColor(),
-                        fontSize: '11px'
-                    }
-                }
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: getLabelColor(),
-                        fontSize: '12px',
-                        fontWeight: 500
-                    }
-                }
-            },
-            legend: {
-                show: false
-            },
-            tooltip: {
-                theme: getTooltipTheme(),
-                y: {
-                    formatter: function(val) {
-                        return val + " leitos";
-                    }
-                }
-            },
-            grid: {
-                borderColor: '#e9ecef',
-                strokeDashArray: 3
-            }
-        };
-        
-        var chartLeitos = new ApexCharts(document.querySelector("#chartLeitos"), optionsLeitos);
+        chartLeitos = new ApexCharts(document.querySelector("#chartLeitos"), {
+            series: [{ name: 'Quantidade', data: [leitosOcupados, leitosLivres] }],
+            chart: { type: 'bar', height: 560, toolbar: { show: false } },
+            plotOptions: { bar: { horizontal: true, distributed: true, barHeight: '40%', dataLabels: { position: 'top' } } },
+            colors: ['#ef4444', '#10b981'],
+            dataLabels: { enabled: true, offsetX: 30, style: { fontWeight: 'bold', colors: [getDataLabelColor()] } },
+            xaxis: { categories: ['Ocupados', 'Livres'], labels: { style: { colors: getLabelColor() } } },
+            yaxis: { labels: { style: { colors: getLabelColor() } } },
+            legend: { show: false },
+            tooltip: { theme: getTooltipTheme() },
+            grid: { borderColor: '#e2e8f0', strokeDashArray: 3 }
+        });
         chartLeitos.render();
-        
-        // Dados do Estoque
+
+        // Estoque
         var produtosEstoque = /*[[${produtosBaixoEstoque.source}]]*/ [];
-        
         if (produtosEstoque.length > 0) {
-            // Pegar apenas os 5 primeiros produtos para economia de espaço
-            var top5Produtos = produtosEstoque.slice(0, 5);
-            var produtosNomes = [];
-            var produtosQuantidades = [];
-            
-            top5Produtos.forEach(function(produto) {
-                produtosNomes.push(produto.nome);
-                produtosQuantidades.push(produto.quantidade);
+            var top5 = produtosEstoque.slice(0, 5);
+            chartEstoque = new ApexCharts(document.querySelector("#chartEstoque"), {
+                series: [{ name: 'Quantidade', data: top5.map(function(p) { return p.quantidade; }) }],
+                chart: { type: 'bar', height: 260, toolbar: { show: false } },
+                plotOptions: { bar: { horizontal: true, barHeight: '60%', dataLabels: { position: 'top' } } },
+                colors: ['#ef4444'],
+                dataLabels: { enabled: true, offsetX: 25, style: { fontWeight: 'bold', colors: [getDataLabelColor()] } },
+                xaxis: { categories: top5.map(function(p) { return p.nome; }), labels: { style: { colors: getLabelColor() } } },
+                yaxis: { labels: { style: { colors: getLabelColor() }, maxWidth: 120 } },
+                tooltip: { theme: getTooltipTheme() },
+                grid: { borderColor: '#e2e8f0', strokeDashArray: 3 }
             });
-            
-            var optionsEstoque = {
-                series: [{
-                    name: 'Quantidade',
-                    data: produtosQuantidades
-                }],
-                chart: {
-                    type: 'bar',
-                    height: 260,
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    toolbar: {
-                        show: false
-                    }
-                },
-                plotOptions: {
-                    bar: {
-                        horizontal: true,
-                        barHeight: '60%',
-                        dataLabels: {
-                            position: 'top'
-                        }
-                    }
-                },
-                colors: ['#dc3545'],
-                dataLabels: {
-                    enabled: true,
-                    offsetX: 25,
-                    style: {
-                        fontSize: '11px',
-                        fontWeight: 'bold',
-                        colors: [getDataLabelColor()]
-                    }
-                },
-                xaxis: {
-                    categories: produtosNomes,
-                    title: {
-                        text: 'Quantidade',
-                        style: {
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            color: getTitleColor()
-                        }
-                    },
-                    labels: {
-                        style: {
-                            colors: getLabelColor(),
-                            fontSize: '11px'
-                        }
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        style: {
-                            colors: getLabelColor(),
-                            fontSize: '11px'
-                        },
-                        maxWidth: 120
-                    }
-                },
-                tooltip: {
-                    theme: getTooltipTheme(),
-                    y: {
-                        formatter: function(val) {
-                            return val + " unidades";
-                        }
-                    }
-                },
-                grid: {
-                    borderColor: '#e9ecef',
-                    strokeDashArray: 3
-                }
-            };
-            
-            var chartEstoque = new ApexCharts(document.querySelector("#chartEstoque"), optionsEstoque);
             chartEstoque.render();
         }
-        
-        // Gráfico de Evolução de Acolhimentos
+
+        // Evolução
         var mesesEvolucao = /*[[${dashboard.mesesEvolucao}]]*/ [];
         var entradasEvolucao = /*[[${dashboard.entradasEvolucao}]]*/ [];
         var saidasEvolucao = /*[[${dashboard.saidasEvolucao}]]*/ [];
-        
-        var optionsEvolucao = {
-            series: [{
-                name: 'Entradas',
-                data: entradasEvolucao
-            }, {
-                name: 'Saídas',
-                data: saidasEvolucao
-            }],
-            chart: {
-                type: 'line',
-                height: 520,
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                toolbar: {
-                    show: false
-                },
-                zoom: {
-                    enabled: false
-                }
-            },
-            colors: ['#28a745', '#dc3545'],
-            stroke: {
-                width: 3,
-                curve: 'smooth'
-            },
-            dataLabels: {
-                enabled: true,
-                style: {
-                    fontSize: '11px',
-                    fontWeight: 'bold'
-                }
-            },
-            markers: {
-                size: 5,
-                strokeWidth: 2,
-                hover: {
-                    size: 7
-                }
-            },
-            xaxis: {
-                categories: mesesEvolucao,
-                title: {
-                    text: 'Período',
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        color: getTitleColor()
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: getLabelColor(),
-                        fontSize: '11px'
-                    }
-                }
-            },
-            yaxis: {
-                title: {
-                    text: 'Quantidade',
-                    style: {
-                        fontSize: '12px',
-                        fontWeight: 600,
-                        color: getTitleColor()
-                    }
-                },
-                labels: {
-                    style: {
-                        colors: getLabelColor(),
-                        fontSize: '11px'
-                    }
-                }
-            },
-            legend: {
-                position: 'top',
-                horizontalAlign: 'center',
-                fontSize: '12px',
-                fontWeight: 500,
-                labels: {
-                    colors: getLabelColor()
-                },
-                markers: {
-                    width: 10,
-                    height: 10,
-                    radius: 3
-                }
-            },
-            tooltip: {
-                theme: getTooltipTheme(),
-                y: {
-                    formatter: function(val) {
-                        return val + " acolhidos";
-                    }
-                }
-            },
-            grid: {
-                borderColor: '#e9ecef',
-                strokeDashArray: 3
-            }
-        };
-        
-        var chartEvolucao = new ApexCharts(document.querySelector("#chartEvolucao"), optionsEvolucao);
+        chartEvolucao = new ApexCharts(document.querySelector("#chartEvolucao"), {
+            series: [{ name: 'Entradas', data: entradasEvolucao }, { name: 'Saídas', data: saidasEvolucao }],
+            chart: { type: 'line', height: 560, toolbar: { show: false }, zoom: { enabled: false } },
+            colors: ['#10b981', '#ef4444'],
+            stroke: { width: 3, curve: 'smooth' },
+            dataLabels: { enabled: true, style: { fontSize: '11px', fontWeight: 'bold' } },
+            markers: { size: 5, strokeWidth: 2, hover: { size: 7 } },
+            xaxis: { categories: mesesEvolucao, labels: { style: { colors: getLabelColor() } } },
+            yaxis: { labels: { style: { colors: getLabelColor() } } },
+            legend: { position: 'top', horizontalAlign: 'center', fontSize: '12px', labels: { colors: getLabelColor() } },
+            tooltip: { theme: getTooltipTheme() },
+            grid: { borderColor: '#e2e8f0', strokeDashArray: 3 }
+        });
         chartEvolucao.render();
-        
-        // Atualizar cores dos gráficos quando alternar dark mode
+
+        // Dark mode update
         window.addEventListener('darkModeToggled', function() {
-            const newColor = getDataLabelColor();
-            const newLabelColor = getLabelColor();
-            const newTitleColor = getTitleColor();
-            const newValueColor = document.body.classList.contains('dark-mode') ? '#60a5fa' : '#007bff';
-            const newTooltipTheme = getTooltipTheme();
-            
-            // Atualizar gráfico de Patrimônio
-            if (chartPatrimonio && typeof chartPatrimonio.updateOptions === 'function') {
-                chartPatrimonio.updateOptions({
-                    dataLabels: {
-                        style: {
-                            colors: [newColor]
-                        }
-                    },
-                    legend: {
-                        labels: {
-                            colors: newLabelColor
-                        }
-                    },
-                    plotOptions: {
-                        pie: {
-                            donut: {
-                                labels: {
-                                    name: {
-                                        color: newTitleColor
-                                    },
-                                    value: {
-                                        color: newValueColor
-                                    },
-                                    total: {
-                                        color: newLabelColor
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    tooltip: {
-                        theme: newTooltipTheme
-                    }
-                });
-            }
-            
-            // Atualizar gráfico de Leitos
-            if (chartLeitos && typeof chartLeitos.updateOptions === 'function') {
-                chartLeitos.updateOptions({
-                    dataLabels: {
-                        style: {
-                            colors: [newColor]
-                        }
-                    },
-                    xaxis: {
-                        title: {
-                            style: {
-                                color: newTitleColor
-                            }
-                        },
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    tooltip: {
-                        theme: newTooltipTheme
-                    }
-                });
-            }
-            
-            // Atualizar gráfico de Estoque
-            if (chartEstoque && typeof chartEstoque.updateOptions === 'function') {
-                chartEstoque.updateOptions({
-                    dataLabels: {
-                        style: {
-                            colors: [newColor]
-                        }
-                    },
-                    xaxis: {
-                        title: {
-                            style: {
-                                color: newTitleColor
-                            }
-                        },
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    tooltip: {
-                        theme: newTooltipTheme
-                    }
-                });
-            }
-            
-            // Atualizar gráfico de Evolução
-            if (chartEvolucao && typeof chartEvolucao.updateOptions === 'function') {
-                chartEvolucao.updateOptions({
-                    xaxis: {
-                        title: {
-                            style: {
-                                color: newTitleColor
-                            }
-                        },
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    yaxis: {
-                        title: {
-                            style: {
-                                color: newTitleColor
-                            }
-                        },
-                        labels: {
-                            style: {
-                                colors: newLabelColor
-                            }
-                        }
-                    },
-                    legend: {
-                        labels: {
-                            colors: newLabelColor
-                        }
-                    },
-                    tooltip: {
-                        theme: newTooltipTheme
-                    }
-                });
-            }
+            var opts = function() { return {
+                dataLabels: { style: { colors: [getDataLabelColor()] } },
+                xaxis: { labels: { style: { colors: getLabelColor() } } },
+                yaxis: { labels: { style: { colors: getLabelColor() } } },
+                legend: { labels: { colors: getLabelColor() } },
+                tooltip: { theme: getTooltipTheme() }
+            }; };
+            if (chartPatrimonio) chartPatrimonio.updateOptions(opts());
+            if (chartLeitos) chartLeitos.updateOptions(opts());
+            if (chartEstoque) chartEstoque.updateOptions(opts());
+            if (chartEvolucao) chartEvolucao.updateOptions(opts());
         });
     });
 </script>

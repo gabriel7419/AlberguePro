@@ -1,217 +1,124 @@
+<!-- Formulário de Vaga (Cadastrar/Editar) -->
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
-<head>
-    <title>Cadastro de Vaga</title>
-</head>
+<head><title>Cadastro de Vaga</title></head>
 <body>
 <section>
-    <!-- Mensagem de erro -->
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span th:text="${errorMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <div th:if="${errorMessage}"   class="alert alert-danger d-flex gap-2 mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span th:text="${errorMessage}"></span></div>
+    <div th:if="${successMessage}" class="alert alert-success d-flex gap-2 mb-3"><i class="bi bi-check-circle-fill"></i><span th:text="${successMessage}"></span></div>
 
-    
-    <!-- Mensagem de sucesso -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle"></i>
-        <span th:text="${successMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="card card-primary">
+    <div class="card" style="max-width:540px">
         <div class="card-header card-header-blue">
-            <h3 class="card-title">Gestão de Vagas - Cadastrar</h3>
+            <h3 class="card-title">Gestão de Vagas — Cadastrar</h3>
         </div>
-
         <form th:action="@{/vaga/salvar}" th:object="${vaga}" method="post">
-
             <input type="hidden" th:field="*{id}">
-
             <div class="card-body">
-
-                <div class="form-group">
-                    <label>Acolhido</label>
-                    <select class="form-control" th:field="*{acolhido.id}" id="acolhidoSelect"
+                <!-- Acolhido -->
+                <div class="mb-3">
+                    <label class="form-label">Acolhido</label>
+                    <select class="form-select" th:field="*{acolhido.id}" id="acolhidoSelect"
                             th:classappend="${#fields.hasErrors('acolhido.id')} ? 'is-invalid' : ''">
                         <option value="">Selecione o Acolhido...</option>
-                        <option th:each="a : ${acolhidos}"
-                                th:value="${a.id}"
-                                th:text="${a.nome}">
-                        </option>
+                        <option th:each="a : ${acolhidos}" th:value="${a.id}" th:text="${a.nome}"></option>
                     </select>
-                    <div th:if="${#fields.hasErrors('acolhido.id')}" th:errors="*{acolhido.id}"
-                         class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('acolhido.id')}" th:errors="*{acolhido.id}" class="invalid-feedback"></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="quarto">Quarto</label>
-                    <select class="form-control" id="quarto">
+                <!-- Quarto -->
+                <div class="mb-3">
+                    <label class="form-label">Quarto</label>
+                    <select class="form-select" id="quarto">
                         <option value="">Selecione o Quarto...</option>
-                        <option th:each="q : ${quartos}"
-                                th:value="${q.id}"
+                        <option th:each="q : ${quartos}" th:value="${q.id}"
                                 th:text="'Quarto ' + ${q.numeroQuarto}"
-                                th:selected="${quartoSelecionadoId != null and quartoSelecionadoId == q.id}">
-                        </option>
+                                th:selected="${quartoSelecionadoId != null and quartoSelecionadoId == q.id}"></option>
                     </select>
-                    <div th:if="${#fields.hasErrors('leito')}" class="text-danger">
-                        O quarto é obrigatório.
-                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="leito">Leito</label>
-                    <select class="form-control" id="leito" th:field="*{leito.id}"
+                <!-- Leito -->
+                <div class="mb-3">
+                    <label class="form-label">Leito</label>
+                    <select class="form-select" id="leito" th:field="*{leito.id}"
                             th:classappend="${#fields.hasErrors('leito')} ? 'is-invalid' : ''">
                         <option value="">Selecione o Leito...</option>
                     </select>
                     <div th:if="${#fields.hasErrors('leito')}" th:errors="*{leito}" class="invalid-feedback"></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="dataEntrada">Data de Ingresso</label>
+                <!-- Data de Ingresso -->
+                <div class="mb-3">
+                    <label for="dataEntrada" class="form-label">Data de Ingresso</label>
                     <input type="date" class="form-control" id="dataEntrada" th:field="*{dataEntrada}" readonly
                            th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('dataEntrada')}" th:errors="*{dataEntrada}"
-                         class="invalid-feedback"></div>
+                    <div th:if="${#fields.hasErrors('dataEntrada')}" th:errors="*{dataEntrada}" class="invalid-feedback"></div>
                 </div>
-
-                <div class="form-group">
-                    <label for="dataSaida">Data de Saída</label>
+                <!-- Data de Saída -->
+                <div class="mb-3">
+                    <label for="dataSaida" class="form-label">Data de Saída</label>
                     <input type="date" class="form-control" id="dataSaida" th:field="*{dataSaida}" readonly
                            th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid' : ''">
                     <div th:if="${#fields.hasErrors('dataSaida')}" th:errors="*{dataSaida}" class="invalid-feedback"></div>
                 </div>
-
             </div>
-            
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Salvar</button>
-                <a th:href="@{/vaga/listar}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+            <div class="card-footer d-flex gap-2">
+                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Salvar</button>
+                <a th:href="@{/vaga/listar}" class="btn btn-secondary"><i class="bi bi-x"></i> Cancelar</a>
             </div>
         </form>
     </div>
 </section>
 <script th:inline="javascript">
-    /*<![CDATA[*/
+document.addEventListener('DOMContentLoaded', function() {
+    var quartoSelect   = document.getElementById('quarto');
+    var leitoSelect    = document.getElementById('leito');
+    var acolhidoSelect = document.getElementById('acolhidoSelect');
+    var dataEntrada    = document.getElementById('dataEntrada');
+    var dataSaida      = document.getElementById('dataSaida');
+    var vagaId         = /*[[${vaga.id}]]*/ null;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const quartoSelect = document.getElementById('quarto');
-        const leitoSelect = document.getElementById('leito');
-        
-        // Pega o ID da vaga em modo de edição (se existir)
-        const vagaId = /*[[${vaga.id}]]*/ null;
-
-        // Função para carregar os leitos via AJAX
-        function carregarLeitos(quartoId, leitoSelecionadoId) {
-            // Limpa as opções atuais (exceto "Selecione...")
-            leitoSelect.innerHTML = '<option value="">Selecione o Leito...</option>';
-
-            if (quartoId) {
-                // Monta a URL com o parâmetro vagaId se estiver em modo edição
-                let url = '/vaga/leitos/' + quartoId;
-                if (vagaId) {
-                    url += '?vagaId=' + vagaId;
-                }
-                
-                // Requisição AJAX para o endpoint que criamos no Controller
-                fetch(url)
-                    .then(response => response.json())
-                    .then(leitos => {
-                        leitos.forEach(leito => {
-                            const option = document.createElement('option');
-                            option.value = leito.id;
-                            option.textContent = 'Leito ' + leito.numeroLeito;
-
-                            // Mantém a seleção em caso de edição ou erro de validação
-                            if (leitoSelecionadoId && leito.id.toString() === leitoSelecionadoId) {
-                                option.selected = true;
-                            }
-                            leitoSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Erro ao buscar leitos:', error);
-                        alert('Erro ao carregar os leitos do quarto.');
-                    });
-            }
-        }
-
-        // Variáveis Thymeleaf para o modo de edição
-        const leitoIdSalvo = leitoSelect.value;
-        const quartoIdSalvo = quartoSelect.value;
-
-        // 1. Lógica para a Edição: Se já há um quarto selecionado (vindo do Controller)
-        if (quartoIdSalvo) {
-            // Carrega os leitos do quarto que já está selecionado na abertura da página.
-            carregarLeitos(quartoIdSalvo, leitoIdSalvo);
-        }
-
-        // 2. Lógica para o Cadastro/Mudança: Adiciona o listener de mudança ao select do Quarto
-        quartoSelect.addEventListener('change', function() {
-            const selectedQuartoId = this.value;
-            // Zera o campo de Leito para evitar seleção incorreta
-            leitoSelect.value = "";
-
-            carregarLeitos(selectedQuartoId, null); // Null para não selecionar nada automaticamente
-        });
-
-    });
-
-    /*]]>*/
-
-const acolhidoSelect = document.getElementById('acolhidoSelect'); // Verifique se o ID está no SELECT
-const dataEntradaInput = document.getElementById('dataEntrada'); // ID do input de data de entrada
-const dataSaidaInput = document.getElementById('dataSaida');   // ID do input de data de saída
-
-const formatarDataParaInput = (dataObj) => {
-    if (!dataObj) return '';
-
-    const date = new Date(dataObj);
-
-    if (isNaN(date.getTime())) return '';
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mês é 0-indexado
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-};
-
-if (acolhidoSelect) {
-    acolhidoSelect.addEventListener('change', function() {
-        const acolhidoId = this.value;
-
-        dataEntradaInput.value = '';
-        dataSaidaInput.value = '';
-
-        if (acolhidoId) {
-            fetch('/vaga/acolhido/datas/' + acolhidoId)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao buscar as datas do acolhido.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data) {
-                        dataEntradaInput.value = data.dataIngresso;
-                        dataSaidaInput.value = data.dataSaida;
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar datas:', error);
+    function carregarLeitos(quartoId, leitoSelecionadoId) {
+        leitoSelect.innerHTML = '<option value="">Selecione o Leito...</option>';
+        if (!quartoId) return;
+        var url = '/vaga/leitos/' + quartoId + (vagaId ? '?vagaId=' + vagaId : '');
+        fetch(url)
+            .then(function(r) { return r.json(); })
+            .then(function(leitos) {
+                leitos.forEach(function(leito) {
+                    var opt = document.createElement('option');
+                    opt.value = leito.id;
+                    opt.textContent = 'Leito ' + leito.numeroLeito;
+                    if (leitoSelecionadoId && leito.id.toString() === leitoSelecionadoId) opt.selected = true;
+                    leitoSelect.appendChild(opt);
                 });
-        }
-    });
-}
+            })
+            .catch(function(err) { console.error('Erro ao buscar leitos:', err); });
+    }
 
+    var quartoIdSalvo = quartoSelect.value;
+    var leitoIdSalvo  = leitoSelect.value;
+    if (quartoIdSalvo) carregarLeitos(quartoIdSalvo, leitoIdSalvo);
+
+    quartoSelect.addEventListener('change', function() {
+        leitoSelect.value = '';
+        carregarLeitos(this.value, null);
+    });
+
+    if (acolhidoSelect) {
+        acolhidoSelect.addEventListener('change', function() {
+            dataEntrada.value = '';
+            dataSaida.value   = '';
+            if (!this.value) return;
+            fetch('/vaga/acolhido/datas/' + this.value)
+                .then(function(r) { if (!r.ok) throw new Error(); return r.json(); })
+                .then(function(data) {
+                    if (data) {
+                        dataEntrada.value = data.dataIngresso || '';
+                        dataSaida.value   = data.dataSaida   || '';
+                    }
+                })
+                .catch(function(err) { console.error('Erro ao carregar datas:', err); });
+        });
+    }
+});
 </script>
 </body>
 </html>
