@@ -14,63 +14,65 @@
       <form th:action="@{/estoque/salvar}" th:object="${produto}" method="post">
         <input type="hidden" th:field="*{id}">
         <div class="card-body">
-          <!-- Tipo -->
-          <div class="mb-3">
-            <label class="form-label">Tipo</label>
-            <div class="d-flex gap-3">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Alimento" checked>
-                <label class="form-check-label">Alimento</label>
+          <div class="row g-3">
+            <!-- Tipo -->
+            <div class="col-12">
+              <label class="form-label">Tipo</label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" th:field="*{tipo}" value="Alimento" checked>
+                  <label class="form-check-label">Alimento</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" th:field="*{tipo}" value="Higiene">
+                  <label class="form-check-label">Higiene</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" th:field="*{tipo}" value="Limpeza">
+                  <label class="form-check-label">Limpeza</label>
+                </div>
               </div>
+              <div th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-danger" style="font-size:12px;margin-top:4px"></div>
+            </div>
+            <!-- Nome -->
+            <div class="col-md-6">
+              <label for="nome" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Nome do produto"
+                th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''">
+              <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="invalid-feedback"></div>
+            </div>
+            <!-- Quantidade -->
+            <div class="col-md-3">
+              <label for="quantidade" class="form-label">Quantidade</label>
+              <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="0"
+                th:classappend="${#fields.hasErrors('quantidade')} ? 'is-invalid' : ''">
+              <div th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}" class="invalid-feedback"></div>
+            </div>
+            <!-- Unidade -->
+            <div class="col-md-3">
+              <label for="unidade" class="form-label">Unidade</label>
+              <select class="form-select" id="unidade" th:field="*{unidadeId}"
+                th:classappend="${#fields.hasErrors('unidadeId')} ? 'is-invalid' : ''">
+                <option value="">Selecione a Unidade</option>
+                <option th:each="u : ${unidades}" th:value="${u.id}" th:text="${u.nome}"
+                  th:selected="${produto.unidadeId != null and u.id == produto.unidadeId}"></option>
+              </select>
+              <div th:if="${#fields.hasErrors('unidadeId')}" th:errors="*{unidadeId}" class="invalid-feedback"></div>
+            </div>
+            <!-- Não Perecível -->
+            <div class="col-12">
               <div class="form-check">
-                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Higiene">
-                <label class="form-check-label">Higiene</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Limpeza">
-                <label class="form-check-label">Limpeza</label>
+                <input class="form-check-input" type="checkbox" id="naoPerecivel" th:field="*{naoPerecivel}">
+                <label class="form-check-label" for="naoPerecivel">Produto não perecível / sem data de vencimento</label>
               </div>
             </div>
-            <div th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-danger" style="font-size:12px;margin-top:4px"></div>
-          </div>
-          <!-- Nome -->
-          <div class="mb-3">
-            <label for="nome" class="form-label">Nome</label>
-            <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Nome do produto"
-              th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''">
-            <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="invalid-feedback"></div>
-          </div>
-          <!-- Quantidade -->
-          <div class="mb-3">
-            <label for="quantidade" class="form-label">Quantidade</label>
-            <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="0"
-              th:classappend="${#fields.hasErrors('quantidade')} ? 'is-invalid' : ''">
-            <div th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}" class="invalid-feedback"></div>
-          </div>
-          <!-- Unidade -->
-          <div class="mb-3">
-            <label for="unidade" class="form-label">Unidade</label>
-            <select class="form-select" id="unidade" th:field="*{unidadeId}"
-              th:classappend="${#fields.hasErrors('unidadeId')} ? 'is-invalid' : ''">
-              <option value="">Selecione a Unidade</option>
-              <option th:each="u : ${unidades}" th:value="${u.id}" th:text="${u.nome}"
-                th:selected="${produto.unidadeId != null and u.id == produto.unidadeId}"></option>
-            </select>
-            <div th:if="${#fields.hasErrors('unidadeId')}" th:errors="*{unidadeId}" class="invalid-feedback"></div>
-          </div>
-          <!-- Não Perecível -->
-          <div class="mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="naoPerecivel" th:field="*{naoPerecivel}">
-              <label class="form-check-label" for="naoPerecivel">Produto não perecível / sem data de vencimento</label>
+            <!-- Data de Vencimento -->
+            <div class="col-md-6" id="dataVencimentoGroup">
+              <label for="dataDeVencimento" class="form-label">Data de Vencimento</label>
+              <input type="date" class="form-control" id="dataDeVencimento" th:field="*{dataDeVencimento}"
+                th:classappend="${#fields.hasErrors('dataDeVencimento')} ? 'is-invalid' : ''">
+              <div th:if="${#fields.hasErrors('dataDeVencimento')}" th:errors="*{dataDeVencimento}" class="invalid-feedback"></div>
             </div>
-          </div>
-          <!-- Data de Vencimento -->
-          <div class="mb-3" id="dataVencimentoGroup">
-            <label for="dataDeVencimento" class="form-label">Data de Vencimento</label>
-            <input type="date" class="form-control" id="dataDeVencimento" th:field="*{dataDeVencimento}"
-              th:classappend="${#fields.hasErrors('dataDeVencimento')} ? 'is-invalid' : ''">
-            <div th:if="${#fields.hasErrors('dataDeVencimento')}" th:errors="*{dataDeVencimento}" class="invalid-feedback"></div>
           </div>
         </div>
         <div class="card-footer d-flex gap-2">

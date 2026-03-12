@@ -17,51 +17,53 @@
         <form th:action="@{/patrimonio/salvar}" th:object="${patrimonio}" method="post">
             <input type="hidden" th:field="*{id}">
             <div class="card-body">
-                <!-- Status -->
-                <div class="mb-3">
-                    <label class="form-label">Status</label>
-                    <div class="d-flex flex-wrap gap-3">
-                        <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em uso"><label class="form-check-label">Em uso</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em manutenção"><label class="form-check-label">Em manutenção</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em estoque"><label class="form-check-label">Em estoque</label></div>
-                        <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Baixado"><label class="form-check-label">Baixado</label></div>
+                <div class="row g-3">
+                    <!-- Status -->
+                    <div class="col-12">
+                        <label class="form-label">Status</label>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em uso"><label class="form-check-label">Em uso</label></div>
+                            <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em manutenção"><label class="form-check-label">Em manutenção</label></div>
+                            <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Em estoque"><label class="form-check-label">Em estoque</label></div>
+                            <div class="form-check"><input class="form-check-input" type="radio" th:field="*{status}" value="Baixado"><label class="form-check-label">Baixado</label></div>
+                        </div>
+                        <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger" style="font-size:12px;margin-top:4px"></div>
                     </div>
-                    <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="text-danger" style="font-size:12px;margin-top:4px"></div>
-                </div>
-                <!-- Nome -->
-                <div class="mb-3">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Nome do item patrimonado"
-                           th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="invalid-feedback"></div>
-                </div>
-                <!-- Patrimônio -->
-                <div class="mb-3">
-                    <label for="patrimonio" class="form-label">Patrimônio</label>
-                    <input type="number" class="form-control" id="patrimonio" th:field="*{patrimonio}" placeholder="Número do patrimônio"
-                           th:classappend="${#fields.hasErrors('patrimonio')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('patrimonio')}" th:errors="*{patrimonio}" class="invalid-feedback"></div>
-                </div>
-                <!-- Data -->
-                <div class="mb-3">
-                    <label for="data" class="form-label">Data de Aquisição</label>
-                    <input type="date" class="form-control" id="data" th:field="*{data_aquisicao}"
-                           th:classappend="${#fields.hasErrors('data_aquisicao')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('data_aquisicao')}" th:errors="*{data_aquisicao}" class="invalid-feedback"></div>
-                </div>
-                <!-- Local -->
-                <div class="mb-3">
-                    <label for="local" class="form-label">Localização Atual</label>
-                    <input type="text" class="form-control" id="local" th:field="*{local_atual}" placeholder="Ex: escritório, refeitório"
-                           th:classappend="${#fields.hasErrors('local_atual')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('local_atual')}" th:errors="*{local_atual}" class="invalid-feedback"></div>
-                </div>
-                <!-- Observação -->
-                <div class="mb-3">
-                    <label for="observacao" class="form-label">Observação</label>
-                    <input type="text" class="form-control" id="observacao" th:field="*{observacao}" placeholder="Observações adicionais"
-                           th:classappend="${#fields.hasErrors('observacao')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('observacao')}" th:errors="*{observacao}" class="invalid-feedback"></div>
+                    <!-- Nome -->
+                    <div class="col-md-6">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Nome do item patrimonado"
+                               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Patrimônio -->
+                    <div class="col-md-3">
+                        <label for="patrimonio" class="form-label">Nº Patrimônio</label>
+                        <input type="number" class="form-control" id="patrimonio" th:field="*{patrimonio}" placeholder="Número do patrimônio"
+                               th:classappend="${#fields.hasErrors('patrimonio')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('patrimonio')}" th:errors="*{patrimonio}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Data de Aquisição -->
+                    <div class="col-md-3">
+                        <label for="data" class="form-label">Data de Aquisição</label>
+                        <input type="date" class="form-control" id="data" th:field="*{data_aquisicao}"
+                               th:classappend="${#fields.hasErrors('data_aquisicao')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('data_aquisicao')}" th:errors="*{data_aquisicao}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Localização -->
+                    <div class="col-md-6">
+                        <label for="local" class="form-label">Localização Atual</label>
+                        <input type="text" class="form-control" id="local" th:field="*{local_atual}" placeholder="Ex: escritório, refeitório"
+                               th:classappend="${#fields.hasErrors('local_atual')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('local_atual')}" th:errors="*{local_atual}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Observação -->
+                    <div class="col-md-6">
+                        <label for="observacao" class="form-label">Observação</label>
+                        <input type="text" class="form-control" id="observacao" th:field="*{observacao}" placeholder="Observações adicionais"
+                               th:classappend="${#fields.hasErrors('observacao')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('observacao')}" th:errors="*{observacao}" class="invalid-feedback"></div>
+                    </div>
                 </div>
             </div>
             <div class="card-footer d-flex gap-2">

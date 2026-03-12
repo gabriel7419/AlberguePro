@@ -15,48 +15,50 @@
         <form th:action="@{/vaga/salvar}" th:object="${vaga}" method="post">
             <input type="hidden" th:field="*{id}">
             <div class="card-body">
-                <!-- Acolhido -->
-                <div class="mb-3">
-                    <label class="form-label">Acolhido</label>
-                    <select class="form-select" th:field="*{acolhido.id}" id="acolhidoSelect"
-                            th:classappend="${#fields.hasErrors('acolhido.id')} ? 'is-invalid' : ''">
-                        <option value="">Selecione o Acolhido...</option>
-                        <option th:each="a : ${acolhidos}" th:value="${a.id}" th:text="${a.nome}"></option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('acolhido.id')}" th:errors="*{acolhido.id}" class="invalid-feedback"></div>
-                </div>
-                <!-- Quarto -->
-                <div class="mb-3">
-                    <label class="form-label">Quarto</label>
-                    <select class="form-select" id="quarto">
-                        <option value="">Selecione o Quarto...</option>
-                        <option th:each="q : ${quartos}" th:value="${q.id}"
-                                th:text="'Quarto ' + ${q.numeroQuarto}"
-                                th:selected="${quartoSelecionadoId != null and quartoSelecionadoId == q.id}"></option>
-                    </select>
-                </div>
-                <!-- Leito -->
-                <div class="mb-3">
-                    <label class="form-label">Leito</label>
-                    <select class="form-select" id="leito" th:field="*{leito.id}"
-                            th:classappend="${#fields.hasErrors('leito')} ? 'is-invalid' : ''">
-                        <option value="">Selecione o Leito...</option>
-                    </select>
-                    <div th:if="${#fields.hasErrors('leito')}" th:errors="*{leito}" class="invalid-feedback"></div>
-                </div>
-                <!-- Data de Ingresso -->
-                <div class="mb-3">
-                    <label for="dataEntrada" class="form-label">Data de Ingresso</label>
-                    <input type="date" class="form-control" id="dataEntrada" th:field="*{dataEntrada}" readonly
-                           th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('dataEntrada')}" th:errors="*{dataEntrada}" class="invalid-feedback"></div>
-                </div>
-                <!-- Data de Saída -->
-                <div class="mb-3">
-                    <label for="dataSaida" class="form-label">Data de Saída</label>
-                    <input type="date" class="form-control" id="dataSaida" th:field="*{dataSaida}" readonly
-                           th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid' : ''">
-                    <div th:if="${#fields.hasErrors('dataSaida')}" th:errors="*{dataSaida}" class="invalid-feedback"></div>
+                <div class="row g-3">
+                    <!-- Acolhido -->
+                    <div class="col-md-6">
+                        <label class="form-label">Acolhido</label>
+                        <select class="form-select" th:field="*{acolhido.id}" id="acolhidoSelect"
+                                th:classappend="${#fields.hasErrors('acolhido.id')} ? 'is-invalid' : ''">
+                            <option value="">Selecione o Acolhido...</option>
+                            <option th:each="a : ${acolhidos}" th:value="${a.id}" th:text="${a.nome}"></option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('acolhido.id')}" th:errors="*{acolhido.id}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Quarto -->
+                    <div class="col-md-3">
+                        <label class="form-label">Quarto</label>
+                        <select class="form-select" id="quarto">
+                            <option value="">Selecione o Quarto...</option>
+                            <option th:each="q : ${quartos}" th:value="${q.id}"
+                                    th:text="'Quarto ' + ${q.numeroQuarto}"
+                                    th:selected="${quartoSelecionadoId != null and quartoSelecionadoId == q.id}"></option>
+                        </select>
+                    </div>
+                    <!-- Leito -->
+                    <div class="col-md-3">
+                        <label class="form-label">Leito</label>
+                        <select class="form-select" id="leito" th:field="*{leito.id}"
+                                th:classappend="${#fields.hasErrors('leito')} ? 'is-invalid' : ''">
+                            <option value="">Selecione o Leito...</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('leito')}" th:errors="*{leito}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Data de Ingresso -->
+                    <div class="col-md-3">
+                        <label for="dataEntrada" class="form-label">Data de Ingresso</label>
+                        <input type="date" class="form-control" id="dataEntrada" th:field="*{dataEntrada}" readonly
+                               th:classappend="${#fields.hasErrors('dataEntrada')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('dataEntrada')}" th:errors="*{dataEntrada}" class="invalid-feedback"></div>
+                    </div>
+                    <!-- Data de Saída -->
+                    <div class="col-md-3">
+                        <label for="dataSaida" class="form-label">Data de Saída</label>
+                        <input type="date" class="form-control" id="dataSaida" th:field="*{dataSaida}" readonly
+                               th:classappend="${#fields.hasErrors('dataSaida')} ? 'is-invalid' : ''">
+                        <div th:if="${#fields.hasErrors('dataSaida')}" th:errors="*{dataSaida}" class="invalid-feedback"></div>
+                    </div>
                 </div>
             </div>
             <div class="card-footer d-flex gap-2">
