@@ -1,177 +1,113 @@
-<!-- Tela de lista de estoque -->
+<!-- Lista de Patrimônios -->
 <!DOCTYPE html>
-<!-- Puxa o layout principal, passando o título e o conteúdo -->
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
-<head>
-    <!-- Título que vai aparecer na aba do navegador -->
-    <title>Lista de Patrimônios</title>
-</head>
+<head><title>Lista de Patrimônios</title></head>
 <body>
-    <!-- Conteúdo principal da página -->
-    <section>
-        <!-- Mensagem de erro -->
-        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span th:text="${errorMessage}"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        
-        <!-- Mensagem de sucesso -->
-        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle"></i>
-            <span th:text="${successMessage}"></span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+<section>
+    <div th:if="${errorMessage}"   class="alert alert-danger d-flex gap-2 mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span th:text="${errorMessage}"></span></div>
+    <div th:if="${successMessage}" class="alert alert-success d-flex gap-2 mb-3"><i class="bi bi-check-circle-fill"></i><span th:text="${successMessage}"></span></div>
 
-        <!-- Filtros Colapsáveis -->
-        <div class="card card-primary collapsed-card mb-3">
-            <div class="card-header card-header-blue">
-                <h3 class="card-title">Filtros</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body" style="display: none;">
-                <form th:action="@{/patrimonio}" method="get">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" class="form-control" placeholder="Buscar por nome..." th:value="${nome}">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="status">Status:</label>
-                                <select id="status" name="status" class="form-control">
-                                    <option value="">Todos</option>
-                                    <option value="Em uso" th:selected="${status == 'Em uso'}">Em uso</option>
-                                    <option value="Em manutenção" th:selected="${status == 'Em manutenção'}">Em manutenção</option>
-                                    <option value="Em estoque" th:selected="${status == 'Em estoque'}">Em estoque</option>
-                                    <option value="Baixado" th:selected="${status == 'Baixado'}">Baixado</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="localAtual">Local Atual:</label>
-                                <input type="text" id="localAtual" name="localAtual" class="form-control" placeholder="Ex: Almoxarifado" th:value="${localAtual}">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <div class="btn-group btn-block">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-search"></i> Filtrar
-                                    </button>
-                                    <a th:href="@{/patrimonio}" class="btn btn-secondary">
-                                        <i class="fas fa-times"></i> Limpar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Filtros -->
+    <div class="card mb-3">
+        <div class="card-header" style="cursor:pointer" onclick="toggleFilters()">
+            <h3 class="card-title"><i class="bi bi-funnel me-2 text-primary"></i>Filtros</h3>
+            <button type="button" class="btn btn-sm btn-secondary ms-auto"><i class="bi bi-chevron-down" id="filterChevron"></i></button>
+        </div>
+        <div class="card-body" id="filterBody" style="display:none">
+            <form th:action="@{/patrimonio}" method="get">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Nome</label>
+                        <input type="text" id="nome" name="nome" class="form-control" placeholder="Buscar por nome..." th:value="${nome}">
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Tabela de patrimônios -->
-        <div class="card">
-            <div class="card-header card-header-blue">
-                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                    <h3 class="card-title mb-0">Lista de Patrimônios</h3>
-                    <div class="card-tools mt-2 mt-md-0">
-                        <!-- Botão de Ação Principal -->
-                        <a th:href="@{/patrimonio/novo}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Novo
-                        </a>
-                        
-                        <!-- Botões de Relatórios -->
-                        <a th:href="@{/relatorios/patrimonio/pdf(nome=${nome}, status=${status}, localAtual=${localAtual})}" class="btn btn-danger btn-sm" target="_blank">
-                            <i class="fas fa-file-pdf"></i> Gerar PDF
-                        </a>
-                        <a th:href="@{/relatorios/patrimonio/excel(nome=${nome}, status=${status}, localAtual=${localAtual})}" class="btn btn-success btn-sm">
-                            <i class="fas fa-file-excel"></i> Gerar Excel
-                        </a>
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="Em uso"          th:selected="${status == 'Em uso'}">Em uso</option>
+                            <option value="Em manutenção"   th:selected="${status == 'Em manutenção'}">Em manutenção</option>
+                            <option value="Em estoque"      th:selected="${status == 'Em estoque'}">Em estoque</option>
+                            <option value="Baixado"         th:selected="${status == 'Baixado'}">Baixado</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Local Atual</label>
+                        <input type="text" id="localAtual" name="localAtual" class="form-control" placeholder="Ex: Almoxarifado" th:value="${localAtual}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-search"></i> Filtrar</button>
+                        <a th:href="@{/patrimonio}" class="btn btn-secondary"><i class="bi bi-x"></i></a>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <!-- Se não tiver nada no banc de dados, mostra essa mensagem -->
-                <div th:if="${#lists.isEmpty(patrimonios)}" class="alert alert-info">
-                    Nenhum patrimônio cadastrado.
-                </div>
+            </form>
+        </div>
+    </div>
 
-                <!-- A tabela só aparece se tiver produto na lista -->
-                <div class="table-responsive">
-                    <table class="table table-bordered" th:if="${not #lists.isEmpty(patrimonios)}">
-                    <thead class="thead-blue">
+    <!-- Tabela -->
+    <div class="card">
+        <div class="card-header card-header-blue">
+            <h3 class="card-title">Lista de Patrimônios</h3>
+            <div class="d-flex gap-2">
+                <a th:href="@{/patrimonio/novo}" class="btn btn-sm"><i class="bi bi-plus-lg"></i> Novo</a>
+                <a th:href="@{/relatorios/patrimonio/pdf(nome=${nome}, status=${status}, localAtual=${localAtual})}" class="btn btn-sm btn-danger" target="_blank"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                <a th:href="@{/relatorios/patrimonio/excel(nome=${nome}, status=${status}, localAtual=${localAtual})}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div th:if="${#lists.isEmpty(patrimonios)}" class="alert alert-info"><i class="bi bi-info-circle me-2"></i>Nenhum patrimônio cadastrado.</div>
+            <div class="table-responsive" th:if="${not #lists.isEmpty(patrimonios)}">
+                <table class="table">
+                    <thead>
                         <tr>
                             <th class="sortable" data-sort="nome">Nome</th>
                             <th class="sortable" data-sort="patrimonio">Patrimônio</th>
                             <th class="sortable" data-sort="status">Status</th>
-                            <th class="sortable" data-sort="dataAquisicao">Data da aquisição</th>
-                            <th class="sortable" data-sort="localAtual">Localização atual</th>
+                            <th class="sortable" data-sort="dataAquisicao">Data de Aquisição</th>
+                            <th class="sortable" data-sort="localAtual">Localização Atual</th>
                             <th>Observação</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Loop pra criar uma linha pra cada produto -->
-                        <!-- Se a qtd for 0, a linha fica amarela -->
-                        <tr th:each="patrimonio : ${patrimonios}">
-
-                            <!-- Mostra os dados do produto -->
-                            <td th:text="${patrimonio.nome}"></td>
-                            <td th:text="${patrimonio.patrimonio}"></td>
-                            <td th:text="${patrimonio.status}"></td>
-                            <td th:text="${#temporals.format(patrimonio.data_aquisicao, 'dd/MM/yyyy')}"></td>
-                            <td th:text="${patrimonio.local_atual}"></td>
-                            <td th:text="${patrimonio.observacao}"></td>
+                        <tr th:each="p : ${patrimonios}">
+                            <td th:text="${p.nome}"></td>
+                            <td th:text="${p.patrimonio}"></td>
+                            <td th:text="${p.status}"></td>
+                            <td th:text="${#temporals.format(p.data_aquisicao, 'dd/MM/yyyy')}"></td>
+                            <td th:text="${p.local_atual}"></td>
+                            <td th:text="${p.observacao}"></td>
                             <td>
-                                <a th:href="@{/patrimonio/editar/{id}(id=${patrimonio.id})}" 
-                                   class="btn btn-warning btn-sm"
-                                   data-toggle="tooltip"
-                                   data-placement="top"
-                                   title="Editar patrimônio">
-                                    <i class="fas fa-edit"></i>
+                                <a th:href="@{/patrimonio/editar/{id}(id=${p.id})}" class="btn btn-warning btn-sm"
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Editar patrimônio">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                </div>
-                
-                <!-- Paginação -->
-                <div th:replace="fragments/pagination :: pagination"></div>
             </div>
+            <div th:replace="fragments/pagination :: pagination"></div>
         </div>
-    </section>
+    </div>
+</section>
 <script>
-    // Mantém os filtros abertos se algum filtro estiver ativo
-    $(document).ready(function() {
-        var temFiltroAtivo = false;
-
-        // Verifica se há filtros ativos
-        if ($('#nome').val() || $('#status').val() || $('#localAtual').val()) {
-            temFiltroAtivo = true;
-        }
-
-        // Se houver filtro ativo, expande o card de filtros
-        if (temFiltroAtivo) {
-            $('.collapsed-card').removeClass('collapsed-card');
-            $('.collapsed-card .card-body').show();
-            $('.collapsed-card .btn-tool i').removeClass('fa-plus').addClass('fa-minus');
-        }
-    });
+function toggleFilters() {
+    var body = document.getElementById('filterBody');
+    var icon = document.getElementById('filterChevron');
+    var open = body.style.display !== 'none';
+    body.style.display = open ? 'none' : 'block';
+    icon.className = open ? 'bi bi-chevron-down' : 'bi bi-chevron-up';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var nome = document.getElementById('nome');
+    var status = document.getElementById('status');
+    var local = document.getElementById('localAtual');
+    if ((nome && nome.value) || (status && status.value) || (local && local.value)) {
+        document.getElementById('filterBody').style.display = 'block';
+        document.getElementById('filterChevron').className = 'bi bi-chevron-up';
+    }
+});
 </script>
 </body>
 </html>

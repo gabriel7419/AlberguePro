@@ -1,37 +1,28 @@
-<!-- Página de erro genérica -->
+<!-- Página de Erro Genérica -->
 <!DOCTYPE html>
-<!-- Puxa o layout principal -->
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
-<head>
-</head>
+<head><title>Erro</title></head>
 <body>
 <section>
-    <div class="error-page">
-        <h2 class="headline text-danger">Erro</h2>
-        <div class="error-content">
-            <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! Algo deu errado.</h3>
-            <p>
-                Ocorreu um erro inesperado.
+    <div class="card text-center" style="max-width:520px;margin:60px auto">
+        <div class="card-body py-5">
+            <i class="bi bi-exclamation-triangle-fill text-danger" style="font-size:4rem"></i>
+            <h2 class="mt-3 text-danger">Oops! Algo deu errado.</h2>
+            <p class="text-muted mt-2">
+                Ocorreu um erro inesperado.<br>
                 Por favor, tente novamente mais tarde ou volte para a página inicial.
             </p>
-            <!-- Detalhes do erro-->
-            <script th:inline="javascript">
-                /*<![CDATA[*/
-                const errorMsg = /*[[${exception.message}]]*/ "";
-                if (errorMsg) {
-                    console.error("Detalhes do erro (para desenvolvimento):", errorMsg);
-                }
-                /*]]>*/
-            </script>
-
-            <!-- Botão pra voltar pra home -->
-            <a th:href="@{/}" class="btn btn-primary">Voltar para a Página Inicial</a>
+            <a th:href="@{/}" class="btn btn-primary mt-3">
+                <i class="bi bi-house"></i> Voltar para a Página Inicial
+            </a>
         </div>
     </div>
+    <script th:inline="javascript">
+        var errorMsg = /*[[${exception != null ? exception.message : ''}]]*/ '';
+        if (errorMsg) console.error('Detalhes:', errorMsg);
+    </script>
 </section>
-<script>
-
-</script>
+<script></script>
 </body>
 </html>

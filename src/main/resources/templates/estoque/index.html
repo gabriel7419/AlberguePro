@@ -1,135 +1,98 @@
 <!-- Tela de lista de estoque -->
 <!DOCTYPE html>
-<!-- Puxa o layout principal, passando o título e o conteúdo -->
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
 <head>
-    <title>Lista de Produtos em Estoque</title>
+    <title>Gestão de Estoque</title>
 </head>
 <body>
-    <!-- Conteúdo principal da página -->
-    <section>
-        <!-- Filtros Colapsáveis -->
-        <div class="card card-primary collapsed-card mb-3">
-            <div class="card-header card-header-blue">
-                <h3 class="card-title">Filtros</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body" style="display: none;">
-                <form th:action="@{/estoque}" method="get">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" th:value="${nome}" class="form-control" placeholder="Buscar por nome..." />
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="tipo">Tipo:</label>
-                                <select id="tipo" name="tipo" class="form-control">
-                                    <option value="">Todos</option>
-                                    <option value="Alimento" th:selected="${tipo == 'Alimento'}">Alimento</option>
-                                    <option value="Higiene" th:selected="${tipo == 'Higiene'}">Higiene</option>
-                                    <option value="Limpeza" th:selected="${tipo == 'Limpeza'}">Limpeza</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="unidade">Unidade:</label>
-                                <select id="unidade" name="unidadeId" class="form-control">
-                                    <option value="">Todas</option>
-                                    <option th:each="unidadeOpt : ${unidades}" th:value="${unidadeOpt.id}" th:text="${unidadeOpt.nome}" th:selected="${unidade != null and unidadeOpt.id == unidade.id}"></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="diasVencimento">Vencimento:</label>
-                                <select id="diasVencimento" name="diasVencimento" class="form-control">
-                                    <option value="">Todos os produtos</option>
-                                    <option value="7" th:selected="${diasVencimento != null and diasVencimento == 7}">Vencem em 7 dias</option>
-                                    <option value="15" th:selected="${diasVencimento != null and diasVencimento == 15}">Vencem em 15 dias</option>
-                                    <option value="30" th:selected="${diasVencimento != null and diasVencimento == 30}">Vencem em 30 dias</option>
-                                    <option value="60" th:selected="${diasVencimento != null and diasVencimento == 60}">Vencem em 60 dias</option>
-                                    <option value="90" th:selected="${diasVencimento != null and diasVencimento == 90}">Vencem em 90 dias</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label>&nbsp;</label>
-                                <div class="btn-group btn-block">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fas fa-search"></i> Filtrar
-                                    </button>
-                                    <a th:href="@{/estoque}" class="btn btn-secondary">
-                                        <i class="fas fa-times"></i> Limpar
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+<section>
+    <!-- Filtros -->
+    <div class="card mb-3" id="filterCard">
+        <div class="card-header" style="cursor:pointer" onclick="toggleFilters()">
+            <h3 class="card-title">
+                <i class="bi bi-funnel me-2 text-primary"></i>Filtros
+            </h3>
+            <button type="button" class="btn btn-sm btn-secondary ms-auto" style="padding:3px 10px">
+                <i class="bi bi-chevron-down" id="filterChevron"></i>
+            </button>
+        </div>
+        <div class="card-body" id="filterBody" style="display:none">
+            <form th:action="@{/estoque}" method="get">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Nome</label>
+                        <input type="text" id="nome" name="nome" th:value="${nome}" class="form-control" placeholder="Buscar por nome...">
                     </div>
-                </form>
+                    <div class="col-md-2">
+                        <label class="form-label">Tipo</label>
+                        <select id="tipo" name="tipo" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="Alimento" th:selected="${tipo == 'Alimento'}">Alimento</option>
+                            <option value="Higiene"  th:selected="${tipo == 'Higiene'}">Higiene</option>
+                            <option value="Limpeza"  th:selected="${tipo == 'Limpeza'}">Limpeza</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Unidade</label>
+                        <select id="unidade" name="unidadeId" class="form-select">
+                            <option value="">Todas</option>
+                            <option th:each="u : ${unidades}" th:value="${u.id}" th:text="${u.nome}"
+                                    th:selected="${unidade != null and u.id == unidade.id}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Vencimento</label>
+                        <select id="diasVencimento" name="diasVencimento" class="form-select">
+                            <option value="">Todos os produtos</option>
+                            <option value="7"  th:selected="${diasVencimento != null and diasVencimento == 7}">Vencem em 7 dias</option>
+                            <option value="15" th:selected="${diasVencimento != null and diasVencimento == 15}">Vencem em 15 dias</option>
+                            <option value="30" th:selected="${diasVencimento != null and diasVencimento == 30}">Vencem em 30 dias</option>
+                            <option value="60" th:selected="${diasVencimento != null and diasVencimento == 60}">Vencem em 60 dias</option>
+                            <option value="90" th:selected="${diasVencimento != null and diasVencimento == 90}">Vencem em 90 dias</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="bi bi-search"></i> Filtrar
+                        </button>
+                        <a th:href="@{/estoque}" class="btn btn-secondary">
+                            <i class="bi bi-x"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela de produtos -->
+    <div class="card">
+        <div class="card-header card-header-blue">
+            <h3 class="card-title">
+                <span th:if="${diasVencimento == null}">Lista de Produtos em Estoque</span>
+                <span th:if="${diasVencimento != null}">Produtos que Vencem em <span th:text="${diasVencimento}"></span> dias</span>
+            </h3>
+            <div class="d-flex flex-wrap gap-2">
+                <a th:href="@{/estoque/novo}" class="btn btn-sm"><i class="bi bi-plus-lg"></i> Novo</a>
+                <a th:href="@{/estoque/baixa}" class="btn btn-sm" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff"><i class="bi bi-arrow-down-circle"></i> Baixa</a>
+                <a th:href="@{/estoque/historico}" class="btn btn-sm" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff"><i class="bi bi-clock-history"></i> Histórico</a>
+                <span th:if="${diasVencimento == null}">
+                    <a th:href="@{/estoque/relatorio/pdf(nome=${nome}, tipo=${tipo}, unidadeId=${unidade != null ? unidade.id : ''})}" class="btn btn-sm btn-danger" target="_blank"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                    <a th:href="@{/estoque/relatorio/excel(nome=${nome}, tipo=${tipo}, unidadeId=${unidade != null ? unidade.id : ''})}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+                </span>
+                <span th:if="${diasVencimento != null}">
+                    <a th:href="@{/estoque/relatorio/vencimento/pdf(dias=${diasVencimento})}" class="btn btn-sm btn-danger" target="_blank"><i class="bi bi-file-earmark-pdf"></i> PDF</a>
+                    <a th:href="@{/estoque/relatorio/vencimento/excel(dias=${diasVencimento})}" class="btn btn-sm btn-success"><i class="bi bi-file-earmark-excel"></i> Excel</a>
+                </span>
             </div>
         </div>
-
-        <!-- Tabela de produtos -->
-        <div class="card card-primary">
-            <div class="card-header card-header-blue">
-                <div class="d-flex justify-content-between align-items-center flex-wrap">
-                    <h3 class="card-title mb-0">
-                        <span th:if="${diasVencimento == null}">Lista de Produtos em Estoque</span>
-                        <span th:if="${diasVencimento != null}">Lista de Produtos que Vencem em <span th:text="${diasVencimento}"></span> dias</span>
-                    </h3>
-                    <div class="card-tools mt-2 mt-md-0">
-                        <!-- Botões de Ação Principal -->
-                        <a th:href="@{/estoque/novo}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Novo
-                        </a>
-                        <a th:href="@{/estoque/baixa}" class="btn btn-danger btn-sm">
-                            <i class="fas fa-arrow-down"></i> Baixa
-                        </a>
-                        <a th:href="@{/estoque/historico}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-history"></i> Histórico
-                        </a>
-                        
-                        <!-- Relatórios de Estoque Geral -->
-                        <span th:if="${diasVencimento == null}">
-                            <a th:href="@{/estoque/relatorio/pdf(nome=${nome}, tipo=${tipo}, unidadeId=${unidade != null ? unidade.id : ''})}" class="btn btn-danger btn-sm" target="_blank">
-                                <i class="fas fa-file-pdf"></i> Gerar PDF
-                            </a>
-                            <a th:href="@{/estoque/relatorio/excel(nome=${nome}, tipo=${tipo}, unidadeId=${unidade != null ? unidade.id : ''})}" class="btn btn-success btn-sm">
-                                <i class="fas fa-file-excel"></i> Gerar Excel
-                            </a>
-                        </span>
-                        <!-- Relatórios de Vencimento -->
-                        <span th:if="${diasVencimento != null}">
-                            <a th:href="@{/estoque/relatorio/vencimento/pdf(dias=${diasVencimento})}" class="btn btn-danger btn-sm" target="_blank">
-                                <i class="fas fa-file-pdf"></i> Gerar PDF
-                            </a>
-                            <a th:href="@{/estoque/relatorio/vencimento/excel(dias=${diasVencimento})}" class="btn btn-success btn-sm">
-                                <i class="fas fa-file-excel"></i> Gerar Excel
-                            </a>
-                        </span>
-                    </div>
-                </div>
+        <div class="card-body">
+            <div th:if="${#lists.isEmpty(produtos)}" class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>Nenhum produto cadastrado no estoque.
             </div>
-            <div class="card-body">
-                <!-- Se não tiver produto, mostra essa mensagem -->
-                <div th:if="${#lists.isEmpty(produtos)}" class="alert alert-info">
-                    Nenhum produto cadastrado no estoque.
-                </div>
-
-                <!-- A tabela só aparece se tiver produto na lista -->
-                <div class="table-responsive">
-                    <table class="table table-bordered" th:if="${not #lists.isEmpty(produtos)}">
-                    <thead class="thead-blue">
+            <div class="table-responsive" th:if="${not #lists.isEmpty(produtos)}">
+                <table class="table">
+                    <thead>
                         <tr>
                             <th class="sortable" data-sort="nome">Nome</th>
                             <th class="sortable" data-sort="tipo">Tipo</th>
@@ -140,82 +103,61 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Loop pra criar uma linha pra cada produto -->
-                        <!-- Se a qtd for 0, a linha fica amarela -->
-                        <!-- Se o produto estiver vencido, a linha fica vermelha -->
-                        <!-- Se o produto estiver próximo ao vencimento (< 3 dias), a linha fica amarela -->
-                        <tr th:each="produto : ${produtos}" 
+                        <tr th:each="produto : ${produtos}"
                             th:classappend="${produto.vencido ? 'table-danger-expiration' : (produto.proximoDoVencimento ? 'table-warning-expiration' : (produto.quantidade == 0 ? 'table-warning' : ''))}">
-                            <!-- Mostra os dados do produto com ícone de alerta -->
                             <td>
-                                <span th:if="${produto.vencido}" class="text-danger mr-1" title="Produto Vencido">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                </span>
-                                <span th:if="${produto.proximoDoVencimento and !produto.vencido}" class="text-warning mr-1" title="Vence em breve">
-                                    <i class="fas fa-clock"></i>
-                                </span>
-                                <span th:if="${produto.quantidade == 0 and !produto.vencido and !produto.proximoDoVencimento}" class="text-warning mr-1" title="Estoque Esgotado">
-                                    <i class="fas fa-box-open"></i>
-                                </span>
+                                <span th:if="${produto.vencido}" class="text-danger me-1"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                                <span th:if="${produto.proximoDoVencimento and !produto.vencido}" class="text-warning me-1"><i class="bi bi-clock-fill"></i></span>
+                                <span th:if="${produto.quantidade == 0 and !produto.vencido and !produto.proximoDoVencimento}" class="text-warning me-1"><i class="bi bi-box"></i></span>
                                 <span th:text="${produto.nome}">Arroz</span>
                             </td>
                             <td th:text="${produto.tipo}">Alimento</td>
                             <td>
                                 <span th:text="${produto.quantidade}">50</span>
-                                <!-- Se a qtd for 0, mostra a badge "Esgotado" -->
-                                <span th:if="${produto.quantidade == 0}" class="badge bg-danger ml-1">Esgotado</span>
+                                <span th:if="${produto.quantidade == 0}" class="badge bg-danger ms-1">Esgotado</span>
                             </td>
                             <td th:text="${produto.unidade.nome}">kg</td>
-                            <!-- Formata a data pra o padrão brasileiro ou mostra "Não Perecível" -->
                             <td>
                                 <span th:if="${produto.naoPerecivel == true or produto.dataDeVencimento == null}" class="badge badge-info">Não Perecível</span>
                                 <span th:if="${produto.naoPerecivel != true and produto.dataDeVencimento != null}">
-                                    <span th:text="${#temporals.format(produto.dataDeVencimento, 'dd/MM/yyyy')}">15/10/2025</span>
-                                    <span th:if="${produto.vencido}" class="badge bg-danger ml-1">
-                                        <i class="fas fa-exclamation-triangle"></i> Vencido
-                                    </span>
-                                    <span th:if="${produto.proximoDoVencimento and !produto.vencido}" class="badge bg-warning ml-1" style="color: #000 !important;">
-                                        <i class="fas fa-clock"></i> Vence em breve
-                                    </span>
+                                    <span th:text="${#temporals.format(produto.dataDeVencimento, 'dd/MM/yyyy')}"></span>
+                                    <span th:if="${produto.vencido}" class="badge bg-danger ms-1"><i class="bi bi-x-circle"></i> Vencido</span>
+                                    <span th:if="${produto.proximoDoVencimento and !produto.vencido}" class="badge bg-warning ms-1"><i class="bi bi-clock"></i> Vence em breve</span>
                                 </span>
                             </td>
                             <td>
-                                <!-- Botão pra editar o produto -->
-                                <a th:href="@{/estoque/editar/{id}(id=${produto.id})}" 
+                                <a th:href="@{/estoque/editar/{id}(id=${produto.id})}"
                                    class="btn btn-warning btn-sm"
-                                   data-toggle="tooltip"
-                                   data-placement="top"
-                                   title="Editar produto">
-                                    <i class="fas fa-edit"></i>
+                                   data-bs-toggle="tooltip" data-bs-placement="top" title="Editar produto">
+                                    <i class="bi bi-pencil"></i>
                                 </a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                </div>
-                
-                <!-- Paginação -->
-                <div th:replace="fragments/pagination :: pagination"></div>
             </div>
+            <div th:replace="fragments/pagination :: pagination"></div>
         </div>
-    </section>
+    </div>
+</section>
 <script>
-    // Mantém os filtros abertos se algum filtro estiver ativo
-    $(document).ready(function() {
-        var temFiltroAtivo = false;
-        
-        // Verifica se há filtros ativos
-        if ($('#nome').val() || $('#tipo').val() || $('#unidade').val()) {
-            temFiltroAtivo = true;
-        }
-        
-        // Se houver filtro ativo, expande o card de filtros
-        if (temFiltroAtivo) {
-            $('.collapsed-card').removeClass('collapsed-card');
-            $('.collapsed-card .card-body').show();
-            $('.collapsed-card .btn-tool i').removeClass('fa-plus').addClass('fa-minus');
-        }
-    });
+function toggleFilters() {
+    var body = document.getElementById('filterBody');
+    var icon = document.getElementById('filterChevron');
+    var open = body.style.display !== 'none';
+    body.style.display = open ? 'none' : 'block';
+    icon.className = open ? 'bi bi-chevron-down' : 'bi bi-chevron-up';
+    localStorage.setItem('estoqueFilters', open ? 'closed' : 'open');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var saved = localStorage.getItem('estoqueFilters');
+    var hasFilter = document.getElementById('nome').value || document.getElementById('tipo').value || document.getElementById('unidade').value;
+    if (saved === 'open' || hasFilter) {
+        document.getElementById('filterBody').style.display = 'block';
+        document.getElementById('filterChevron').className = 'bi bi-chevron-up';
+    }
+});
 </script>
 </body>
 </html>

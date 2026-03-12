@@ -1,1117 +1,342 @@
 <!-- Molde principal das páginas -->
 <!DOCTYPE html>
 <!-- Define o layout e os parâmetros que ele recebe (título e conteúdo) -->
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="layout (title, content, script)">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:fragment="layout (title, content, script)">
 <head>
     <meta charset="UTF-8">
-    <!-- Título da aba -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlberguePro</title>
-    <!-- CSS do AdminLTE e FontAwesome -->
-    <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.2.0/dist/css/adminlte.min.css}">
-    <link rel="stylesheet" th:href="@{/webjars/AdminLTE/3.2.0/plugins/fontawesome-free/css/all.min.css}">
-    <style>
-        /* Reduzir tamanhos para simular zoom 75% (menos agressivo que 67%) */
-        
-        /* Fonte base menor */
-        body, html {
-            font-size: 13px !important; /* padrão é 14px, agora 75% = ~13px */
-        }
-        
-        /* Ajustar títulos */
-        h1 { font-size: 2rem !important; }
-        h2 { font-size: 1.6rem !important; }
-        h3 { font-size: 1.4rem !important; }
-        h4 { font-size: 1.2rem !important; }
-        h5 { font-size: 1.05rem !important; }
-        h6 { font-size: 0.95rem !important; }
-        
-        /* Cards e boxes menores */
-        .card {
-            margin-bottom: 0.9rem !important;
-        }
-        
-        .card-header {
-            padding: 0.6rem 0.9rem !important;
-        }
-        
-        .card-body {
-            padding: 0.9rem !important;
-        }
-        
-        .card-title {
-            font-size: 1.05rem !important;
-            margin-bottom: 0 !important;
-        }
-        
-        /* Small boxes do dashboard */
-        .small-box {
-            height: auto !important;
-        }
-        
-        .small-box .inner {
-            padding: 0.7rem !important;
-        }
-        
-        .small-box h3 {
-            font-size: 2.2rem !important;
-        }
-        
-        .small-box p {
-            font-size: 0.95rem !important;
-        }
-        
-        .small-box .icon {
-            font-size: 4.5rem !important;
-        }
-        
-        /* Tabelas */
-        .table {
-            font-size: 0.9rem !important;
-        }
-        
-        .table th,
-        .table td {
-            padding: 0.45rem !important;
-        }
-        
-        /* Botões */
-        .btn {
-            padding: 0.35rem 0.7rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        .btn-sm {
-            padding: 0.25rem 0.5rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        .btn-lg {
-            padding: 0.45rem 0.9rem !important;
-            font-size: 1.05rem !important;
-        }
-        
-        /* Formulários */
-        .form-control,
-        .form-select {
-            padding: 0.35rem 0.7rem !important;
-            font-size: 0.9rem !important;
-            height: auto !important;
-        }
-        
-        .form-group {
-            margin-bottom: 0.7rem !important;
-        }
-        
-        label {
-            font-size: 0.9rem !important;
-            margin-bottom: 0.25rem !important;
-        }
-        
-        /* Barra lateral - REDUZIDA */
-        .main-sidebar {
-            width: 220px !important; /* aumentado de 200px para 220px */
-            overflow-x: hidden !important;
-        }
-        
-        /* Ajustar content-wrapper para compensar sidebar menor */
-        body:not(.sidebar-collapse) .content-wrapper,
-        body:not(.sidebar-collapse) .main-footer,
-        body:not(.sidebar-collapse) .main-header {
-            margin-left: 220px !important; /* aumentado de 200px para 220px */
-        }
-        
-        /* Quando sidebar está colapsado, usar valores padrão do AdminLTE */
-        body.sidebar-collapse .content-wrapper,
-        body.sidebar-collapse .main-footer,
-        body.sidebar-collapse .main-header {
-            margin-left: 4.6rem !important; /* valor padrão do AdminLTE */
-        }
-        
-        body.sidebar-collapse .main-sidebar {
-            width: 4.6rem !important; /* valor padrão colapsado */
-        }
-        
-        /* Esconder texto do menu quando colapsado */
-        body.sidebar-collapse .nav-sidebar .nav-link p {
-            display: none !important;
-        }
-        
-        /* Esconder setas quando colapsado */
-        body.sidebar-collapse .nav-sidebar .nav-link .right {
-            display: none !important;
-        }
-        
-        /* Centralizar ícones quando colapsado - SEM ANIMAÇÕES */
-        body.sidebar-collapse .nav-sidebar .nav-link {
-            text-align: center !important;
-            padding: 0.5rem !important;
-            justify-content: center !important;
-            display: flex !important;
-            position: static !important;
-            white-space: nowrap !important;
-            overflow: hidden !important;
-        }
-        
-        body.sidebar-collapse .nav-sidebar .nav-link .nav-icon {
-            margin-right: 0 !important;
-            margin-left: 0 !important;
-            display: inline-block !important;
-            width: auto !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            transform: none !important;
-            transition: none !important;
-            position: static !important;
-        }
-        
-        /* Desabilitar TUDO no hover quando colapsado */
-        body.sidebar-collapse .nav-sidebar .nav-link:hover,
-        body.sidebar-collapse .nav-sidebar .nav-link:focus {
-            width: auto !important;
-            overflow: hidden !important;
-            position: static !important;
-            transform: none !important;
-        }
-        
-        body.sidebar-collapse .nav-sidebar .nav-link:hover .nav-icon,
-        body.sidebar-collapse .nav-sidebar .nav-link:focus .nav-icon {
-            transform: none !important;
-            margin-right: 0 !important;
-            margin-left: 0 !important;
-            position: static !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            display: inline-block !important;
-            transition: none !important;
-        }
-        
-        /* Forçar sidebar a não expandir no hover */
-        body.sidebar-collapse .main-sidebar:hover {
-            width: 4.6rem !important;
-        }
-        
-        /* Manter espaçamento correto dos ícones quando expandido */
-        body:not(.sidebar-collapse) .nav-sidebar .nav-link {
-            text-align: left !important;
-            padding: 0.55rem 0.8rem !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-        }
-        
-        body:not(.sidebar-collapse) .nav-sidebar .nav-link .nav-icon {
-            margin-right: 0.8rem !important;
-            width: 1.4rem !important;
-            display: inline-block !important;
-            text-align: center;
-        }
-        
-        /* Esconder nome da marca quando colapsado */
-        body.sidebar-collapse .brand-text {
-            display: none !important;
-        }
-        
-        /* Garantir transição suave */
-        .main-sidebar,
-        .content-wrapper,
-        .main-header,
-        .main-footer {
-            transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
-        }
-        
-        /* Menu lateral */
-        .nav-sidebar .nav-link {
-            padding: 0.55rem 0.8rem !important;
-            font-size: 1.05rem !important;
-        }
-        
-        .nav-sidebar .nav-link .nav-icon {
-            font-size: 1.15rem !important;
-            margin-right: 0.6rem !important;
-            width: 1.4rem !important;
-        }
-        
-        /* Setas de dropdown - FORÇAR VISIBILIDADE COM ESPECIFICIDADE MÁXIMA */
-        body:not(.sidebar-collapse) .nav-sidebar .nav-item .nav-link .right,
-        body:not(.sidebar-collapse) .nav-sidebar .nav-item .nav-link p .right,
-        body:not(.sidebar-collapse) .sidebar .nav-sidebar .nav-link .right,
-        body:not(.sidebar-collapse) [data-widget="treeview"] .nav-link .right {
-            font-size: 1rem !important;
-            transition: transform 0.3s ease !important;
-            display: inline-block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
-            color: rgba(255, 255, 255, 0.8) !important;
-            margin-left: auto !important;
-        }
-        
-        /* Quando o menu está aberto - rotacionar seta */
-        body:not(.sidebar-collapse) .nav-item.menu-open > .nav-link .right,
-        body:not(.sidebar-collapse) .nav-item.menu-open > .nav-link p .right {
-            transform: rotate(-90deg) !important;
-        }
-        
-        /* Garantir que o link use flexbox */
-        body:not(.sidebar-collapse) .nav-sidebar .nav-link {
-            display: flex !important;
-            align-items: center !important;
-        }
-        
-        /* Garantir que o parágrafo ocupe espaço disponível */
-        body:not(.sidebar-collapse) .nav-sidebar .nav-link p {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            width: 100% !important;
-            margin: 0 !important;
-        }
-        
-        .brand-link {
-            padding: 0.8rem 1rem !important;
-            font-size: 1.35rem !important; /* aumentado de 1.25rem para 1.35rem */
-            font-weight: 500 !important;
-        }
-        
-        /* Navbar superior */
-        .main-header {
-            padding: 0 0.9rem !important;
-        }
-        
-        .navbar-nav .nav-link {
-            padding: 0.35rem 0.7rem !important;
-        }
-        
-        /* Footer */
-        .main-footer {
-            padding: 0.7rem !important;
-            font-size: 0.85rem !important;
-        }
-        
-        /* Content wrapper */
-        .content-header {
-            padding: 0.7rem 0 !important;
-        }
-        
-        .content {
-            padding-top: 0.5rem !important;
-        }
-        
-        /* Badges */
-        .badge {
-            padding: 0.25rem 0.45rem !important;
-            font-size: 0.8rem !important;
-        }
-        
-        /* Alerts */
-        .alert {
-            padding: 0.6rem 0.9rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        /* Input groups */
-        .input-group-text {
-            padding: 0.35rem 0.7rem !important;
-            font-size: 0.9rem !important;
-        }
-        
-        /* Ajuste para submenu (treeview) */
-        .nav-treeview > .nav-item > .nav-link {
-            padding-left: 2.4rem !important;
-            font-size: 0.98rem !important; /* aumentado de 0.9rem para 0.98rem */
-        }
-        
-        .nav-treeview > .nav-item > .nav-link .nav-icon {
-            font-size: 0.9rem !important;
-        }
-        
-        /* Gráficos - ajustar altura */
-        [id^="chart"] {
-            height: auto !important;
-        }
-        
-        /* ===== RESPONSIVIDADE MOBILE ===== */
-        @media (max-width: 768px) {
-            /* Remover margens fixas do content-wrapper em mobile */
-            body:not(.sidebar-collapse) .content-wrapper,
-            body:not(.sidebar-collapse) .main-footer,
-            body:not(.sidebar-collapse) .main-header {
-                margin-left: 0 !important;
-            }
-            
-            body.sidebar-collapse .content-wrapper,
-            body.sidebar-collapse .main-footer,
-            body.sidebar-collapse .main-header {
-                margin-left: 0 !important;
-            }
-            
-            /* Sidebar oculta por padrão em mobile */
-            .main-sidebar {
-                margin-left: -220px !important;
-            }
-            
-            /* Quando sidebar está aberta em mobile */
-            body:not(.sidebar-collapse) .main-sidebar {
-                margin-left: 0 !important;
-            }
-            
-            /* Responsividade para tabelas */
-            .table-responsive {
-                display: block;
-                width: 100%;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            /* Melhorar legibilidade de small-boxes em mobile */
-            .small-box .inner h3 {
-                font-size: 1.8rem !important;
-            }
-            
-            .small-box .inner p {
-                font-size: 0.85rem !important;
-            }
-            
-            /* Ajustar botões em mobile */
-            .btn {
-                padding: 0.4rem 0.8rem !important;
-                font-size: 0.85rem !important;
-            }
-            
-            /* Cards mais compactos */
-            .card-body {
-                padding: 0.75rem !important;
-            }
-            
-            .card-header {
-                padding: 0.5rem 0.75rem !important;
-            }
-        }
-        
-        /* Toasts */
-        .toast-container { position: fixed; top: 1rem; right: 1rem; z-index: 1060; width: 320px; }
-        .toast-msg { display:flex; align-items:center; gap:.5rem; padding:.6rem .9rem; margin-bottom:.5rem; border-radius:.25rem; box-shadow:0 4px 12px rgba(0,0,0,.15); color:#fff; opacity:.98; }
-        .toast-msg.success { background:#28a745; }
-        .toast-msg.error { background:#dc3545; }
-        .toast-msg.info { background:#17a2b8; }
-        .toast-msg.warning { background:#ffc107; color:#212529; }
-        .toast-msg .close { background:transparent; border:0; color:inherit; font-size:1.1rem; line-height:1; margin-left:auto; }
-        
-        /* ===== CARD HEADER AZUL ===== */
-        .card-header-blue {
-            background-color: #007bff !important;
-            color: #ffffff !important;
-            border-bottom: 1px solid #0056b3 !important;
-        }
-        
-        .card-header-blue .card-title {
-            color: #ffffff !important;
-            font-weight: 600 !important;
-        }
-        
-        .card-header-blue .btn {
-            color: #ffffff !important;
-            border-color: #ffffff !important;
-        }
-        
-        /* ===== THEAD BRANCO ===== */
-        .table thead.thead-blue th {
-            background-color: #ffffff !important;
-            color: #212529 !important;
-            border-bottom: 2px solid #dee2e6 !important;
-            font-weight: 600 !important;
-        }
-        
-        /* ===== DARK MODE CUSTOMIZATIONS ===== */
-        body.dark-mode .card-header-blue {
-            background-color: #1e3a8a !important;
-            border-bottom: 1px solid #1e40af !important;
-        }
-        
-        body.dark-mode .table thead.thead-blue th {
-            background-color: #374151 !important;
-            color: #e5e7eb !important;
-            border-bottom: 2px solid #4b5563 !important;
-        }
-        
-        body.dark-mode .toast-msg.success {
-            background: #166534 !important;
-        }
-        
-        body.dark-mode .toast-msg.error {
-            background: #991b1b !important;
-        }
-        
-        body.dark-mode .toast-msg.info {
-            background: #0e7490 !important;
-        }
-        
-        body.dark-mode .toast-msg.warning {
-            background: #a16207 !important;
-            color: #fef3c7 !important;
-        }
-        
-        /* Navbar superior em dark mode */
-        body.dark-mode .main-header {
-            background-color: #1f2937 !important;
-            border-bottom: 1px solid #374151 !important;
-        }
-        
-        body.dark-mode .navbar-light .navbar-nav .nav-link {
-            color: #e5e7eb !important;
-        }
-        
-        body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-        
-        /* Botões de relatório em dark mode - remover border branco */
-        body.dark-mode .card-header-blue .btn {
-            border-color: rgba(255, 255, 255, 0.3) !important;
-        }
-        
-        body.dark-mode .card-header-blue .btn:hover {
-            border-color: rgba(255, 255, 255, 0.5) !important;
-        }
-        
-        /* Ajustar cor de linhas de tabela com warning (produtos esgotados) */
-        .table-warning {
-            background-color: #fff3cd !important;
-            color: #000000 !important;
-        }
-        
-        /* Linha para produtos vencidos */
-        .table-danger-expiration {
-            background-color: #f8d7da !important;
-            color: #721c24 !important;
-            border-left: 4px solid #dc3545 !important;
-        }
-        
-        /* Linha para produtos próximos do vencimento */
-        .table-warning-expiration {
-            background-color: #fff3cd !important;
-            color: #000000 !important;
-            border-left: 4px solid #ffc107 !important;
-        }
-        
-        body.dark-mode .table-warning {
-            background-color: #374151 !important;
-            color: #000000 !important;
-            border-left: 4px solid #f59e0b !important;
-        }
-        
-        body.dark-mode .table-warning td {
-            color: #000000 !important;
-            font-weight: 500 !important;
-        }
-        
-        body.dark-mode .table-warning .badge {
-            background-color: #dc2626 !important;
-            color: #ffffff !important;
-        }
-        
-        /* Dark mode para produtos vencidos */
-        body.dark-mode .table-danger-expiration {
-            background-color: #7f1d1d !important;
-            border-left: 4px solid #dc2626 !important;
-        }
-        
-        body.dark-mode .table-danger-expiration td {
-            color: #fecaca !important;
-            font-weight: 600 !important;
-        }
-        
-        /* Dark mode para produtos próximos do vencimento */
-        body.dark-mode .table-warning-expiration {
-            background-color: #78350f !important;
-            border-left: 4px solid #f59e0b !important;
-        }
-        
-        body.dark-mode .table-warning-expiration td {
-            color: #fde68a !important;
-            font-weight: 500 !important;
-        }
-        
-        /* Dark Mode Styles - Simples */
-        body.dark-mode .card-header-blue {
-            background-color: #1e3a8a !important;
-            border-bottom: 1px solid #1e40af !important;
-        }
-        
-        body.dark-mode .table thead.thead-blue th {
-            background-color: #374151 !important;
-            color: #e5e7eb !important;
-            border-bottom: 2px solid #4b5563 !important;
-        }
-        
-        body.dark-mode .toast-msg.success {
-            background: #166534 !important;
-        }
-        
-        body.dark-mode .toast-msg.error {
-            background: #991b1b !important;
-        }
-        
-        body.dark-mode .toast-msg.info {
-            background: #0e7490 !important;
-        }
-        
-        body.dark-mode .toast-msg.warning {
-            background: #a16207 !important;
-            color: #000000 !important;
-        }
-        
-        /* Espaçamento entre botões - Global */
-        .card-tools .btn {
-            margin-left: 3px;
-        }
-        
-        .card-tools .btn:first-child {
-            margin-left: 0;
-        }
-        
-        .btn-group .btn {
-            margin-left: 0 !important;
-        }
-        
-        .d-flex.gap-2 > * {
-            margin-right: 0.5rem !important;
-            margin-bottom: 0.5rem !important;
-        }
-        
-        .d-flex.gap-2 > *:last-child {
-            margin-right: 0 !important;
-        }
-        
-        /* Espaçamento entre botões em formulários */
-        form .btn-group {
-            gap: 3px;
-        }
-        
-        /* Navbar superior em dark mode */
-        body.dark-mode .main-header {
-            background-color: #1f2937 !important;
-            border-bottom: 1px solid #374151 !important;
-        }
-        
-        body.dark-mode .navbar-light .navbar-nav .nav-link {
-            color: #e5e7eb !important;
-        }
-        
-        body.dark-mode .navbar-light .navbar-nav .nav-link:hover {
-            color: #ffffff !important;
-        }
-        
-        /* Botões de relatório em dark mode */
-        body.dark-mode .card-header-blue .btn {
-            border-color: rgba(255, 255, 255, 0.3) !important;
-        }
-        
-        body.dark-mode .card-header-blue .btn:hover {
-            border-color: rgba(255, 255, 255, 0.5) !important;
-        }
-    </style>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- FontAwesome (mantido para compatibilidade com ícones existentes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Design System AlberguePro -->
+    <link rel="stylesheet" th:href="@{/css/custom-new.css}">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
+<body>
 
-    <!-- Barra de cima -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Botão de sanduíche pra esconder/mostrar o menu lateral -->
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-        </ul>
-        <!-- Botão de Dark Mode e Sair -->
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" id="dark-mode-toggle" href="#" role="button" title="Alternar modo escuro">
-                    <i class="fas fa-moon"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <form th:action="@{/logout}" method="post">
-                    <button type="submit" class="btn btn-link nav-link">
-                        <i class="fas fa-sign-out-alt"></i> Sair
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </nav>
+<div id="app-wrapper">
 
-    <!-- Menu lateral -->
-    <aside class="main-sidebar sidebar-no-expand sidebar-dark-primary elevation-4">
-        <!-- Logo -->
-        <a th:href="@{/}" class="brand-link">
-            <span class="brand-text font-weight-light">AlberguePro</span>
+    <!-- ===== SIDEBAR ===== -->
+    <aside id="sidebar">
+        <!-- Brand -->
+        <a th:href="@{/}" class="sidebar-brand">
+            <div class="sidebar-brand-icon">
+                <i class="bi bi-building-fill"></i>
+            </div>
+            <span class="sidebar-brand-text">AlberguePro</span>
         </a>
 
-        <div class="sidebar">
-            <nav class="mt-2">
-                <!-- Lista de menus -->
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                    <!-- Item do menu: Dashboard -->
-                    <li class="nav-item">
-                        <a th:href="@{/}" class="nav-link" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <!-- Item do menu: Estoque (com sub-itens) -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gestão de Estoque">
-                            <i class="nav-icon fas fa-box-open"></i>
-                            <p>
-                                Gestão de Estoque
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <!-- Sub-itens do Estoque -->
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/estoque}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Consultar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/estoque/novo}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cadastrar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/estoque/baixa}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Baixa</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Item do menu: Patrimônio (com sub-itens) -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gestão de Patrimônio">
-                            <i class="nav-icon fas fa-landmark"></i>
-                            <p>
-                                Gestão de Patrimônio
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <!-- Sub-itens do Patriônio -->
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/patrimonio}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Consultar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/patrimonio/novo}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cadastrar</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Item do menu: cadastroAcolhido (com sub-itens) -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gestão de Acolhido">
-                            <i class="nav-icon fas fa-id-card"></i>
-                            <p>
-                                Gestão de Acolhido
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <!-- Sub-itens do Cadastro Acolhidos -->
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/cadastroAcolhido/listar}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Consultar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/cadastroAcolhido}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cadastrar</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Item do menu: Vaga (com sub-itens) -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gestão de Vaga">
-                            <i class="nav-icon fas fa-bed"></i>
-                            <p>
-                                Gestão de Vaga
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <!-- Sub-itens do Vaga -->
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/vaga/listar}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Consultar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/vaga}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cadastrar</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+        <!-- Navigation -->
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-label">Menu</div>
 
-                    <!-- Item do menu: Quarto (com sub-itens) -->
-                    <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gestão de Quarto">
-                            <i class="nav-icon fas fa-door-open"></i>
-                            <p>
-                                Gestão de Quarto
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <!-- Sub-itens do Quarto -->
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/quarto/listar}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Consultar</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/quarto/novo}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Cadastrar</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+            <!-- Dashboard -->
+            <div class="nav-item-wrapper">
+                <a th:href="@{/}" class="nav-link-main">
+                    <i class="bi bi-speedometer2 nav-icon"></i>
+                    <span class="nav-link-text">Dashboard</span>
+                </a>
+            </div>
 
-                    <!-- Item do menu: Relatórios Estratégicos -->
-                    <li class="nav-item">
-                        <a href="#" class="nav-link" data-toggle="tooltip" data-placement="right" title="Relatórios Estratégicos">
-                            <i class="nav-icon fas fa-chart-line"></i>
-                            <p>
-                                Relatórios Estratégicos
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a th:href="@{/relatorios/estrategicos}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Visão Geral</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/relatorios/estrategicos/acolhidos}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Entradas Acolhidos</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/relatorios/estrategicos/movimentacao-estoque}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Movimentação Estoque</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a th:href="@{/relatorios/estrategicos/vagas}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Evolução Ocupação</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!-- Item do menu: Usuários -->
-                    <li class="nav-item">
-                        <a th:href="@{/admin/usuarios}" class="nav-link" data-toggle="tooltip" data-placement="right" title="Gerenciar Usuários">
-                            <i class="nav-icon fas fa-user-alt"></i>
-                            <p>Gerenciar Usuários</p>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </aside>
-
-    <!-- Onde o conteúdo das outras páginas aparece -->
-    <div class="content-wrapper">
-        <!-- Seção do conteúdo principal -->
-        <section class="content pb-2">
-            <div class="container-fluid">
-                <!-- O conteúdo da página específica é substituído aqui -->
-                <div th:replace="${content}">
+            <!-- Gestão de Estoque -->
+            <div class="nav-item-wrapper">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-estoque" aria-expanded="false">
+                    <i class="bi bi-box-seam nav-icon"></i>
+                    <span class="nav-link-text">Gestão de Estoque</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-estoque">
+                    <div class="nav-submenu">
+                        <a th:href="@{/estoque}" class="nav-submenu-link">Consultar</a>
+                        <a th:href="@{/estoque/novo}" class="nav-submenu-link">Cadastrar</a>
+                        <a th:href="@{/estoque/baixa}" class="nav-submenu-link">Baixa</a>
+                    </div>
                 </div>
             </div>
-        </section>
-    </div>
 
-    <!-- Rodapé -->
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2025 <a href="#">AlberguePro</a>.</strong> Todos os direitos reservados.
-    </footer>
+            <!-- Gestão de Patrimônio -->
+            <div class="nav-item-wrapper">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-patrimonio" aria-expanded="false">
+                    <i class="bi bi-clipboard2-data nav-icon"></i>
+                    <span class="nav-link-text">Gestão de Patrimônio</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-patrimonio">
+                    <div class="nav-submenu">
+                        <a th:href="@{/patrimonio}" class="nav-submenu-link">Consultar</a>
+                        <a th:href="@{/patrimonio/novo}" class="nav-submenu-link">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
 
-</div>
-<!-- Scripts JS -->
-<script th:src="@{/webjars/AdminLTE/3.2.0/plugins/jquery/jquery.min.js}"></script>
-<script th:src="@{/webjars/AdminLTE/3.2.0/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/webjars/AdminLTE/3.2.0/dist/js/adminlte.min.js}"></script>
+            <!-- Gestão de Acolhido -->
+            <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-acolhido" aria-expanded="false">
+                    <i class="bi bi-person-vcard nav-icon"></i>
+                    <span class="nav-link-text">Gestão de Acolhido</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-acolhido">
+                    <div class="nav-submenu">
+                        <a th:href="@{/cadastroAcolhido/listar}" class="nav-submenu-link">Consultar</a>
+                        <a th:href="@{/cadastroAcolhido}" class="nav-submenu-link">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- Redirecionar para página de consulta quando sidebar está colapsada -->
-<script>
-$(document).ready(function() {
-    // Auto-fechar banners de alerta após 5 segundos
-    setTimeout(function() {
-        $('.alert-dismissible').fadeOut('slow', function() {
-            $(this).remove();
-        });
-    }, 5000);
-    
-    // Restaurar estado da sidebar ao carregar
-    const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (sidebarCollapsed) {
-        $('body').addClass('sidebar-collapse');
-    } else {
-        $('body').removeClass('sidebar-collapse');
-    }
-    
-    // Inicializar tooltips do Bootstrap
-    function initTooltips() {
-        // Tooltips da sidebar (quando colapsada)
-        if ($('body').hasClass('sidebar-collapse')) {
-            $('.nav-sidebar [data-toggle="tooltip"]').tooltip({
-                placement: 'right',
-                boundary: 'window',
-                offset: '0, 10'
-            }).tooltip('enable');
-        } else {
-            $('.nav-sidebar [data-toggle="tooltip"]').tooltip('dispose');
-        }
-        
-        // Tooltips dos botões de ação nas tabelas (sempre ativos)
-        $('.table [data-toggle="tooltip"], .btn[data-toggle="tooltip"]').tooltip({
-            placement: 'top',
-            boundary: 'window',
-            trigger: 'hover',
-            animation: true,
-            delay: { show: 300, hide: 100 }
-        });
-    }
-    
-    // Função para adicionar redirecionamento direto quando colapsado
-    function setupCollapsedBehavior() {
-        if ($('body').hasClass('sidebar-collapse')) {
-            // Estoque -> Consultar
-            $('.nav-sidebar .nav-item').each(function() {
-                var $item = $(this);
-                var $link = $item.children('a.nav-link').first();
-                var $icon = $link.find('.nav-icon');
-                
-                // Verificar qual menu é baseado no ícone
-                if ($icon.hasClass('fa-box-open')) {
-                    // Estoque
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/estoque';
-                        return false;
-                    });
-                } else if ($icon.hasClass('fa-landmark')) {
-                    // Patrimônio
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/patrimonio';
-                        return false;
-                    });
-                } else if ($icon.hasClass('fa-id-card')) {
-                    // Acolhido
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/cadastroAcolhido/listar';
-                        return false;
-                    });
-                } else if ($icon.hasClass('fa-bed')) {
-                    // Vaga
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/vaga/listar';
-                        return false;
-                    });
-                } else if ($icon.hasClass('fa-door-open')) {
-                    // Quarto
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/quarto/listar';
-                        return false;
-                    });
-                } else if ($icon.hasClass('fa-chart-line')) {
-                    // Relatórios Estratégicos
-                    $link.off('click').on('click', function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        window.location.href = '/relatorios/estrategicos';
-                        return false;
-                    });
-                }
-            });
-        }
-    }
-    
-    // Aplicar ao carregar
-    initTooltips();
-    setupCollapsedBehavior();
-    
-    // Monitorar mudanças na sidebar e salvar estado
-    $('[data-widget="pushmenu"]').on('collapsed.lte.pushmenu', function() {
-        localStorage.setItem('sidebarCollapsed', 'true');
-        initTooltips();
-        setupCollapsedBehavior();
-    });
-    
-    $('[data-widget="pushmenu"]').on('shown.lte.pushmenu', function() {
-        localStorage.setItem('sidebarCollapsed', 'false');
-        initTooltips();
-        // Quando expandir, remover comportamento customizado
-        $('.nav-sidebar .nav-item > a.nav-link').off('click');
-    });
-});
-</script>
-<!-- Manter sidebar recolhida ao clicar fora -->
-<script>
-$(function() {
-  function keepCollapsed() {
-    if ($('body').hasClass('sidebar-collapse')) {
-      $('body').addClass('sidebar-collapse').removeClass('sidebar-open');
-    }
-  }
-  // Clique em qualquer área fora da sidebar ou do botão
-  $(document).on('click', function(e){
-    if ($(e.target).closest('.main-sidebar, [data-widget="pushmenu"]').length === 0) {
-      keepCollapsed();
-    }
-  });
-  // Clique direto em header, conteúdo ou footer
-  $('.main-header, .content-wrapper, .main-footer').on('click', keepCollapsed);
-  // Em resize manter recolhida
-  $(window).on('resize', keepCollapsed);
-});
-</script>
+            <!-- Gestão de Vaga -->
+            <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-vaga" aria-expanded="false">
+                    <i class="bi bi-hospital nav-icon"></i>
+                    <span class="nav-link-text">Gestão de Vaga</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-vaga">
+                    <div class="nav-submenu">
+                        <a th:href="@{/vaga/listar}" class="nav-submenu-link">Consultar</a>
+                        <a th:href="@{/vaga}" class="nav-submenu-link">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
 
-<!-- Dark Mode Toggle Script -->
-<script>
-// Script robusto sem dependência do jQuery
-(function() {
-    'use strict';
-    
-    // Função para inicializar o modo escuro
-    function initDarkMode() {
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const body = document.body;
-        
-        if (!darkModeToggle) {
-            console.error('Botão dark-mode-toggle não encontrado!');
-            return;
-        }
-        
-        // Carregar preferência do localStorage
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        
-        if (darkMode) {
-            body.classList.add('dark-mode');
-            const icon = darkModeToggle.querySelector('i');
-            if (icon) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            }
-            darkModeToggle.setAttribute('title', 'Alternar modo claro');
-        }
-        
-        // Adicionar evento de clique
-        darkModeToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Alternar classe dark-mode
-            body.classList.toggle('dark-mode');
-            
-            // Verificar estado atual
-            const isDarkMode = body.classList.contains('dark-mode');
-            
-            // Trocar ícone
-            const icon = this.querySelector('i');
-            if (icon) {
-                if (isDarkMode) {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            }
-            
-            // Atualizar título
-            this.setAttribute('title', isDarkMode ? 'Alternar modo claro' : 'Alternar modo escuro');
-            
-            // Salvar no localStorage
-            localStorage.setItem('darkMode', isDarkMode);
-            
-            // Disparar evento para gráficos
-            window.dispatchEvent(new Event('darkModeToggled'));
-        });
-    }
-    
-    // Executar quando o DOM estiver pronto
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initDarkMode);
-    } else {
-        initDarkMode();
-    }
-})();
-</script>
-<script>
-// Desabilitar autocomplete em todos os inputs, selects e textareas
-document.addEventListener('DOMContentLoaded', function() {
-    // Desabilitar em todos os formulários
-    document.querySelectorAll('form').forEach(function(form) {
-        form.setAttribute('autocomplete', 'off');
-    });
-    
-    // Desabilitar em todos os inputs
-    document.querySelectorAll('input').forEach(function(input) {
-        input.setAttribute('autocomplete', 'off');
-    });
-    
-    // Desabilitar em todos os selects
-    document.querySelectorAll('select').forEach(function(select) {
-        select.setAttribute('autocomplete', 'off');
-    });
-    
-    // Desabilitar em todos os textareas
-    document.querySelectorAll('textarea').forEach(function(textarea) {
-        textarea.setAttribute('autocomplete', 'off');
-    });
-    
-    // Inicializar tooltips globalmente para botões de ação
-    if (typeof $ !== 'undefined' && $.fn.tooltip) {
-        $('[data-toggle="tooltip"]').tooltip({
-            boundary: 'window',
-            trigger: 'hover',
-            animation: true,
-            delay: { show: 300, hide: 100 }
-        });
-    }
-});
-</script>
-<th:block th:replace="${script}"></th:block>
+            <!-- Gestão de Quarto -->
+            <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-quarto" aria-expanded="false">
+                    <i class="bi bi-door-open nav-icon"></i>
+                    <span class="nav-link-text">Gestão de Quarto</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-quarto">
+                    <div class="nav-submenu">
+                        <a th:href="@{/quarto/listar}" class="nav-submenu-link">Consultar</a>
+                        <a th:href="@{/quarto/novo}" class="nav-submenu-link">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section-label">Análises</div>
+
+            <!-- Relatórios Estratégicos -->
+            <div class="nav-item-wrapper">
+                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-relatorios" aria-expanded="false">
+                    <i class="bi bi-graph-up-arrow nav-icon"></i>
+                    <span class="nav-link-text">Relatórios</span>
+                    <i class="bi bi-chevron-right nav-chevron"></i>
+                </button>
+                <div class="collapse" id="menu-relatorios">
+                    <div class="nav-submenu">
+                        <a th:href="@{/relatorios/estrategicos}" class="nav-submenu-link">Visão Geral</a>
+                        <a th:href="@{/relatorios/estrategicos/acolhidos}" class="nav-submenu-link">Entradas Acolhidos</a>
+                        <a th:href="@{/relatorios/estrategicos/movimentacao-estoque}" class="nav-submenu-link">Movimentação Estoque</a>
+                        <a th:href="@{/relatorios/estrategicos/vagas}" class="nav-submenu-link">Evolução Ocupação</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section-label">Administração</div>
+
+            <!-- Usuários -->
+            <div class="nav-item-wrapper">
+                <a th:href="@{/admin/usuarios}" class="nav-link-main">
+                    <i class="bi bi-people nav-icon"></i>
+                    <span class="nav-link-text">Gerenciar Usuários</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Overlay para mobile -->
+    <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div id="main-content">
+
+        <!-- Topbar -->
+        <header id="topbar">
+            <button class="topbar-toggle" id="sidebar-toggle" onclick="toggleSidebar()" title="Menu">
+                <i class="bi bi-list"></i>
+            </button>
+
+            <div class="topbar-spacer"></div>
+
+            <div class="topbar-actions">
+                <!-- Dark Mode Toggle -->
+                <button class="topbar-btn" id="dark-mode-toggle" onclick="toggleDarkMode()" title="Alternar tema">
+                    <i class="bi bi-moon-stars" id="dark-mode-icon"></i>
+                </button>
+
+                <div class="topbar-divider"></div>
+
+                <!-- Logout -->
+                <form th:action="@{/logout}" method="post" style="margin:0">
+                    <button type="submit" class="topbar-btn text-danger">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Sair</span>
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main id="page-content">
+            <div th:replace="${content}"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer id="app-footer">
+            <strong>Copyright &copy; 2025 AlberguePro.</strong> Todos os direitos reservados.
+        </footer>
+
+    </div><!-- /main-content -->
+
+</div><!-- /app-wrapper -->
+
+<!-- Toast Container para mensagens -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- ApexCharts -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+<script>
+// ── Sidebar Toggle ──────────────────────────────────
+var sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+var isMobile = () => window.innerWidth <= 768;
+
+function applySidebarState() {
+    if (isMobile()) {
+        document.body.classList.remove('sidebar-collapsed');
+        if (sidebarCollapsed) {
+            document.body.classList.remove('sidebar-open');
+        }
+    } else {
+        if (sidebarCollapsed) {
+            document.body.classList.add('sidebar-collapsed');
+            document.body.classList.remove('sidebar-open');
+        } else {
+            document.body.classList.remove('sidebar-collapsed');
+        }
+    }
+}
+
+function toggleSidebar() {
+    if (isMobile()) {
+        document.body.classList.toggle('sidebar-open');
+    } else {
+        sidebarCollapsed = !sidebarCollapsed;
+        localStorage.setItem('sidebarCollapsed', sidebarCollapsed);
+        applySidebarState();
+    }
+}
+
+function closeSidebar() {
+    document.body.classList.remove('sidebar-open');
+}
+
+// Aplicar estado inicial
+applySidebarState();
+
+window.addEventListener('resize', applySidebarState);
+
+// Manter collapse state dos submenus
+document.querySelectorAll('.nav-link-main[data-bs-toggle="collapse"]').forEach(function(btn) {
+    var target = btn.getAttribute('data-bs-target');
+    var collapseEl = document.querySelector(target);
+    if (!collapseEl) return;
+
+    collapseEl.addEventListener('show.bs.collapse', function() {
+        btn.setAttribute('aria-expanded', 'true');
+    });
+    collapseEl.addEventListener('hide.bs.collapse', function() {
+        btn.setAttribute('aria-expanded', 'false');
+    });
+
+    // Restaurar estado salvo
+    var savedState = localStorage.getItem('menu' + target);
+    if (savedState === 'open') {
+        new bootstrap.Collapse(collapseEl, { toggle: false }).show();
+    }
+
+    collapseEl.addEventListener('shown.bs.collapse', function() {
+        localStorage.setItem('menu' + target, 'open');
+    });
+    collapseEl.addEventListener('hidden.bs.collapse', function() {
+        localStorage.setItem('menu' + target, 'closed');
+    });
+});
+
+// Marcar link ativo
+(function markActiveLink() {
+    var path = window.location.pathname;
+    document.querySelectorAll('.nav-link-main[href], .nav-submenu-link').forEach(function(link) {
+        if (link.getAttribute('href') === path) {
+            link.classList.add('active');
+            // Abrir menu pai se for submenu
+            var submenu = link.closest('.collapse');
+            if (submenu) {
+                new bootstrap.Collapse(submenu, { toggle: false }).show();
+            }
+        }
+    });
+})();
+
+// ── Dark Mode ───────────────────────────────────────
+function applyDarkMode(isDark) {
+    var icon = document.getElementById('dark-mode-icon');
+    if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        if (icon) { icon.className = 'bi bi-sun'; }
+    } else {
+        document.documentElement.removeAttribute('data-theme');
+        if (icon) { icon.className = 'bi bi-moon-stars'; }
+    }
+}
+
+function toggleDarkMode() {
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    isDark = !isDark;
+    localStorage.setItem('darkMode', isDark);
+    applyDarkMode(isDark);
+    window.dispatchEvent(new Event('darkModeToggled'));
+}
+
+// Aplicar dark mode na inicialização (antes do DOMContentLoaded para evitar flash)
+(function() {
+    var savedDark = localStorage.getItem('darkMode') === 'true';
+    applyDarkMode(savedDark);
+})();
+
+// ── Auto-fechar alerts ──────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        document.querySelectorAll('.alert-dismissible').forEach(function(el) {
+            el.style.transition = 'opacity 0.5s ease';
+            el.style.opacity = '0';
+            setTimeout(function() { el.remove(); }, 500);
+        });
+    }, 5000);
+
+    // Inicializar tooltips Bootstrap 5
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+        new bootstrap.Tooltip(el);
+    });
+
+    // Desabilitar autocomplete
+    document.querySelectorAll('form').forEach(function(f) { f.setAttribute('autocomplete', 'off'); });
+});
+</script>
+
+<th:block th:replace="${script}"></th:block>
+
 </body>
 </html>

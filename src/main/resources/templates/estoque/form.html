@@ -1,117 +1,97 @@
 <!-- Formulário de produto (novo ou edição) -->
 <!DOCTYPE html>
-<!-- Puxa o layout principal -->
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
   th:replace="~{layout :: layout (~{::title/text()}, ~{::section}, ~{::script})}">
-
 <head>
     <title th:text="${produto.id == null ? 'Controle de Estoque - Cadastrar' : 'Controle de Estoque - Editar'}">Controle de Estoque</title>
 </head>
-
 <body>
   <section>
-    <div class="card card-primary">
+    <div class="card" style="max-width: 600px">
       <div class="card-header card-header-blue">
-        <h3 class="card-title" th:text="${produto.id == null ? 'Controle de Estoque - Cadastrar' : 'Controle de Estoque - Editar'}">Controle de Estoque</h3>
+        <h3 class="card-title" th:text="${produto.id == null ? 'Cadastrar Produto' : 'Editar Produto'}">Produto</h3>
       </div>
-      <!-- Formulário pra salvar produto -->
       <form th:action="@{/estoque/salvar}" th:object="${produto}" method="post">
-        <!-- ID escondido, pra saber se é novo ou editado -->
-        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{id}">
         <div class="card-body">
-          <!-- Tipo do produto -->
-          <div class="form-group">
-            <label>Tipo</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" th:field="*{tipo}" value="Alimento" checked>
-              <label class="form-check-label">Alimento</label>
+          <!-- Tipo -->
+          <div class="mb-3">
+            <label class="form-label">Tipo</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Alimento" checked>
+                <label class="form-check-label">Alimento</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Higiene">
+                <label class="form-check-label">Higiene</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" th:field="*{tipo}" value="Limpeza">
+                <label class="form-check-label">Limpeza</label>
+              </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" th:field="*{tipo}" value="Higiene">
-              <label class="form-check-label">Higiene</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" th:field="*{tipo}" value="Limpeza">
-              <label class="form-check-label">Limpeza</label>
-            </div>
-            <div th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-danger"></div>
+            <div th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" class="text-danger" style="font-size:12px;margin-top:4px"></div>
           </div>
-          <!-- Nome do produto -->
-          <div class="form-group">
-            <label for="nome">Nome</label>
+          <!-- Nome -->
+          <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
             <input type="text" class="form-control" id="nome" th:field="*{nome}" placeholder="Nome do produto"
               th:classappend="${#fields.hasErrors('nome')} ? 'is-invalid' : ''">
             <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="invalid-feedback"></div>
           </div>
           <!-- Quantidade -->
-          <div class="form-group">
-            <label for="quantidade">Quantidade</label>
+          <div class="mb-3">
+            <label for="quantidade" class="form-label">Quantidade</label>
             <input type="number" class="form-control" id="quantidade" th:field="*{quantidade}" placeholder="0"
               th:classappend="${#fields.hasErrors('quantidade')} ? 'is-invalid' : ''">
             <div th:if="${#fields.hasErrors('quantidade')}" th:errors="*{quantidade}" class="invalid-feedback"></div>
           </div>
-          <!-- Unidade de medida -->
-          <div class="form-group">
-            <label for="unidade">Unidade</label>
-            <select class="form-control" id="unidade" th:field="*{unidadeId}"
+          <!-- Unidade -->
+          <div class="mb-3">
+            <label for="unidade" class="form-label">Unidade</label>
+            <select class="form-select" id="unidade" th:field="*{unidadeId}"
               th:classappend="${#fields.hasErrors('unidadeId')} ? 'is-invalid' : ''">
               <option value="">Selecione a Unidade</option>
-              <option th:each="unidadeOpt : ${unidades}" th:value="${unidadeOpt.id}" th:text="${unidadeOpt.nome}"
-                th:selected="${produto.unidadeId != null and unidadeOpt.id == produto.unidadeId}"></option>
+              <option th:each="u : ${unidades}" th:value="${u.id}" th:text="${u.nome}"
+                th:selected="${produto.unidadeId != null and u.id == produto.unidadeId}"></option>
             </select>
             <div th:if="${#fields.hasErrors('unidadeId')}" th:errors="*{unidadeId}" class="invalid-feedback"></div>
           </div>
-          <!-- Checkbox Produto Não Perecível -->
-          <div class="form-group">
+          <!-- Não Perecível -->
+          <div class="mb-3">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" id="naoPerecivel" th:field="*{naoPerecivel}">
-              <label class="form-check-label" for="naoPerecivel">
-                Produto não perecível / sem data de vencimento
-              </label>
+              <label class="form-check-label" for="naoPerecivel">Produto não perecível / sem data de vencimento</label>
             </div>
           </div>
-          <!-- Data de vencimento -->
-          <div class="form-group" id="dataVencimentoGroup">
-            <label for="dataDeVencimento">Data de Vencimento</label>
+          <!-- Data de Vencimento -->
+          <div class="mb-3" id="dataVencimentoGroup">
+            <label for="dataDeVencimento" class="form-label">Data de Vencimento</label>
             <input type="date" class="form-control" id="dataDeVencimento" th:field="*{dataDeVencimento}"
               th:classappend="${#fields.hasErrors('dataDeVencimento')} ? 'is-invalid' : ''">
-            <div th:if="${#fields.hasErrors('dataDeVencimento')}" th:errors="*{dataDeVencimento}"
-              class="invalid-feedback"></div>
+            <div th:if="${#fields.hasErrors('dataDeVencimento')}" th:errors="*{dataDeVencimento}" class="invalid-feedback"></div>
           </div>
         </div>
-        <!-- Botões -->
-        <div class="card-footer">
-          <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Salvar</button>
-          <a th:href="@{/estoque}" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
+        <div class="card-footer d-flex gap-2">
+          <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Salvar</button>
+          <a th:href="@{/estoque}" class="btn btn-secondary"><i class="bi bi-x"></i> Cancelar</a>
         </div>
       </form>
     </div>
   </section>
 <script>
-  // Controlar visibilidade do campo de data de vencimento
   document.addEventListener('DOMContentLoaded', function() {
-    const checkboxNaoPerecivel = document.getElementById('naoPerecivel');
-    const dataVencimentoGroup = document.getElementById('dataVencimentoGroup');
-    const dataVencimentoInput = document.getElementById('dataDeVencimento');
-
-    function toggleDataVencimento() {
-      if (checkboxNaoPerecivel.checked) {
-        dataVencimentoGroup.style.display = 'none';
-        dataVencimentoInput.removeAttribute('required');
-        dataVencimentoInput.value = ''; // Limpar o valor quando não perecível
-      } else {
-        dataVencimentoGroup.style.display = 'block';
-        dataVencimentoInput.setAttribute('required', 'required');
-      }
+    var cb = document.getElementById('naoPerecivel');
+    var group = document.getElementById('dataVencimentoGroup');
+    var dateInput = document.getElementById('dataDeVencimento');
+    function toggle() {
+      if (cb.checked) { group.style.display = 'none'; dateInput.removeAttribute('required'); dateInput.value = ''; }
+      else { group.style.display = 'block'; dateInput.setAttribute('required', 'required'); }
     }
-
-    // Executar ao carregar a página
-    toggleDataVencimento();
-
-    // Executar quando o checkbox mudar
-    checkboxNaoPerecivel.addEventListener('change', toggleDataVencimento);
+    toggle();
+    cb.addEventListener('change', toggle);
   });
 </script>
 </body>
-
 </html>

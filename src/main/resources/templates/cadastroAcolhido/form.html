@@ -6,26 +6,11 @@
 </head>
 <body>
 <section>
-    <!-- Mensagem de erro -->
-    <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-triangle"></i>
-        <span th:text="${errorMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    
-    <!-- Mensagem de sucesso -->
-    <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle"></i>
-        <span th:text="${successMessage}"></span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+    <div th:if="${errorMessage}"   class="alert alert-danger d-flex gap-2 mb-3"><i class="bi bi-exclamation-triangle-fill"></i><span th:text="${errorMessage}"></span></div>
+    <div th:if="${successMessage}" class="alert alert-success d-flex gap-2 mb-3"><i class="bi bi-check-circle-fill"></i><span th:text="${successMessage}"></span></div>
 
-    <div class="card card-primary">
-        <div class="card-header">
+    <div class="card">
+        <div class="card-header card-header-blue">
             <h3 class="card-title">Cadastro de Acolhido</h3>
         </div>
         <form th:action="@{/cadastroAcolhido/salvar}" th:object="${acolhido}" method="post" id="multiStepForm" autocomplete="off">
@@ -111,8 +96,8 @@
                         <div th:if="${#fields.hasErrors('filiacao')}" th:errors="*{filiacao}" class="text-danger"></div>
                     </div>
 
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -157,9 +142,9 @@
                         <div th:if="${#fields.hasErrors('quantidadeFilhos')}" th:errors="*{quantidadeFilhos}" class="text-danger"></div>
                     </div>
 
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
-                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -178,9 +163,9 @@
                         <input type="text" class="form-control" id="telefoneFamiliar" th:field="*{telefoneFamiliar}" placeholder="Ex: 11999999999">
                     </div>
 
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
-                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -230,9 +215,9 @@
                         <div th:if="${#fields.hasErrors('qualBeneficio')}" th:errors="*{qualBeneficio}" class="text-danger"></div>
                     </div>
 
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
-                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -344,9 +329,9 @@
                         <div th:if="${#fields.hasErrors('qualDroga')}" th:errors="*{qualDroga}" class="text-danger"></div>
                     </div>
 
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="fas fa-times"></i> Cancelar</a>
-                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="fas fa-arrow-left"></i> Voltar</button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="fas fa-arrow-right"></i></button>
+                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                    <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                    <button type="button" class="btn btn-primary" onclick="nextStep()">Próximo <i class="bi bi-arrow-right"></i></button>
                 </div>
             </div>
 
@@ -442,20 +427,12 @@
                         <input type="date" class="form-control" id="dataSaida" th:field="*{dataSaida}">
                         <div th:if="${#fields.hasErrors('dataSaida')}" th:errors="*{dataSaida}" class="text-danger"></div>
                     </div>
-
-                <div class="card-footer">
-                    <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger">
-                        <i class="fas fa-times"></i> Cancelar
-                    </a>
-                    <button type="button" class="btn btn-secondary" onclick="prevStep()">
-                        <i class="fas fa-arrow-left"></i> Voltar
-                    </button>
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-save"></i> Salvar
-                    </button>
-                </div>
-                    </div>
-                </div>
+                </div><!-- /card-body -->
+            </div><!-- /step6 -->
+            <div class="card-footer d-flex gap-2" id="step6-footer" style="display:none!important">
+                <a th:href="@{/cadastroAcolhido/listar}" class="btn btn-danger"><i class="bi bi-x"></i> Cancelar</a>
+                <button type="button" class="btn btn-secondary" onclick="prevStep()"><i class="bi bi-arrow-left"></i> Voltar</button>
+                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Salvar</button>
             </div>
         </form>
     </div>
@@ -466,11 +443,14 @@
 
     function showStep(step) {
         document.querySelectorAll('.step').forEach(el => el.classList.add('d-none'));
-        const currentStepElement = document.getElementById(`step${step}`);
+        const currentStepElement = document.getElementById('step' + step);
         if (currentStepElement) {
             currentStepElement.classList.remove('d-none');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+        // Footer do último passo fica visível somente no step 6
+        var footer = document.getElementById('step6-footer');
+        if (footer) footer.style.display = (step === totalSteps) ? 'flex' : 'none';
     }
 
     function nextStep() {
