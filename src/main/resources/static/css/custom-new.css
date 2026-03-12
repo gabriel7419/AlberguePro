@@ -82,6 +82,67 @@
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, .3);
     --shadow: 0 4px 12px rgba(0, 0, 0, .35);
     --shadow-lg: 0 10px 30px rgba(0, 0, 0, .4);
+
+    /* Bug fix: sobrescrever variáveis do Bootstrap para dark mode */
+    --bs-body-color: #f1f5f9;
+    --bs-body-bg: #0f172a;
+    --bs-border-color: #334155;
+    color-scheme: dark;
+}
+
+/* Bug fix: forçar cores corretas de formulários no dark mode */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border) !important;
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .form-label,
+[data-theme="dark"] label {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] .form-check-label {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .input-group-text {
+    background-color: var(--bg-raised) !important;
+    border-color: var(--border) !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .modal-title,
+[data-theme="dark"] .modal-body {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .card-title {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] p,
+[data-theme="dark"] span:not(.sidebar-brand-text):not(.nav-link-text) {
+    color: inherit;
+}
+
+[data-theme="dark"] .text-body,
+[data-theme="dark"] .text-dark {
+    color: var(--text-primary) !important;
 }
 
 /* ── Reset & Base ──────────────────────────────────── */
@@ -313,10 +374,19 @@ body.sidebar-collapsed #sidebar {
 body.sidebar-collapsed .sidebar-brand-text,
 body.sidebar-collapsed .nav-link-text,
 body.sidebar-collapsed .nav-chevron,
-body.sidebar-collapsed .sidebar-section-label,
+body.sidebar-collapsed .sidebar-section-label {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+}
+
+/* Bug fix: submenu oculto no estado colapsado — remover espaçamento */
 body.sidebar-collapsed .nav-submenu {
     opacity: 0;
     pointer-events: none;
+    height: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
     width: 0;
 }
 
@@ -438,6 +508,12 @@ body.sidebar-collapsed #main-content {
 #page-content>div {
     width: 100%;
     display: block;
+}
+
+/* Bug fix: card dentro do page-content deve ocupar 100% da largura */
+#page-content .card {
+    width: 100%;
+    max-width: 100%;
 }
 
 /* ── FOOTER ───────────────────────────────────────── */
