@@ -377,6 +377,7 @@ body.sidebar-collapsed .nav-chevron {
     opacity: 0;
     pointer-events: none;
     width: 0;
+    overflow: hidden;
 }
 
 /* Bug fix: Remover espaço do título da seção no estado colapsado */
@@ -407,6 +408,7 @@ body.sidebar-collapsed .nav-item-wrapper {
 body.sidebar-collapsed .nav-link-main {
     justify-content: center;
     padding: 11px 10px;
+    gap: 0;
 }
 
 body.sidebar-collapsed .nav-link-main i.nav-icon {
@@ -1175,7 +1177,8 @@ body.sidebar-collapsed #main-content {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    pointer-events: none; /* ← FIX: Impede que a div invisível bloqueie a tela 😱 */
+    pointer-events: none;
+    /* ← FIX: Impede que a div invisível bloqueie a tela 😱 */
 }
 
 .toast-msg {
@@ -1188,7 +1191,8 @@ body.sidebar-collapsed #main-content {
     color: #fff;
     font-size: 13.5px;
     font-weight: 500;
-    pointer-events: auto; /* Garante que os toasts em si são clicáveis (ex: botão de fechar) */
+    pointer-events: auto;
+    /* Garante que os toasts em si são clicáveis (ex: botão de fechar) */
     animation: slideIn 0.3s ease;
 }
 
@@ -1448,14 +1452,17 @@ body.sidebar-collapsed #main-content {
     .step-label {
         display: none;
     }
+
     .step-circle {
         width: 26px;
         height: 26px;
         font-size: 11px;
     }
+
     .step-progress-item:not(:last-child)::after {
         top: 13px;
     }
+
     .step-progress {
         padding: 14px 16px 0;
     }
