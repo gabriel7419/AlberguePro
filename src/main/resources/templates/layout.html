@@ -49,11 +49,11 @@
 
             <!-- Gestão de Estoque -->
             <div class="nav-item-wrapper">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-estoque" aria-expanded="false">
+                <a th:href="@{/estoque}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-estoque" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-box-seam nav-icon"></i>
                     <span class="nav-link-text">Gestão de Estoque</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-estoque">
                     <div class="nav-submenu">
                         <a th:href="@{/estoque}" class="nav-submenu-link">Consultar</a>
@@ -65,11 +65,11 @@
 
             <!-- Gestão de Patrimônio -->
             <div class="nav-item-wrapper">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-patrimonio" aria-expanded="false">
+                <a th:href="@{/patrimonio}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-patrimonio" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-clipboard2-data nav-icon"></i>
                     <span class="nav-link-text">Gestão de Patrimônio</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-patrimonio">
                     <div class="nav-submenu">
                         <a th:href="@{/patrimonio}" class="nav-submenu-link">Consultar</a>
@@ -80,11 +80,11 @@
 
             <!-- Gestão de Acolhido -->
             <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-acolhido" aria-expanded="false">
+                <a th:href="@{/cadastroAcolhido/listar}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-acolhido" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-person-vcard nav-icon"></i>
                     <span class="nav-link-text">Gestão de Acolhido</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-acolhido">
                     <div class="nav-submenu">
                         <a th:href="@{/cadastroAcolhido/listar}" class="nav-submenu-link">Consultar</a>
@@ -95,11 +95,11 @@
 
             <!-- Gestão de Vaga -->
             <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-vaga" aria-expanded="false">
+                <a th:href="@{/vaga/listar}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-vaga" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-hospital nav-icon"></i>
                     <span class="nav-link-text">Gestão de Vaga</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-vaga">
                     <div class="nav-submenu">
                         <a th:href="@{/vaga/listar}" class="nav-submenu-link">Consultar</a>
@@ -110,11 +110,11 @@
 
             <!-- Gestão de Quarto -->
             <div class="nav-item-wrapper" sec:authorize="isAuthenticated()">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-quarto" aria-expanded="false">
+                <a th:href="@{/quarto/listar}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-quarto" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-door-open nav-icon"></i>
                     <span class="nav-link-text">Gestão de Quarto</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-quarto">
                     <div class="nav-submenu">
                         <a th:href="@{/quarto/listar}" class="nav-submenu-link">Consultar</a>
@@ -127,11 +127,11 @@
 
             <!-- Relatórios Estratégicos -->
             <div class="nav-item-wrapper">
-                <button class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-relatorios" aria-expanded="false">
+                <a th:href="@{/relatorios/estrategicos}" class="nav-link-main" data-bs-toggle="collapse" data-bs-target="#menu-relatorios" aria-expanded="false" onclick="window.location.href=this.getAttribute('href');">
                     <i class="bi bi-graph-up-arrow nav-icon"></i>
                     <span class="nav-link-text">Relatórios</span>
                     <i class="bi bi-chevron-right nav-chevron"></i>
-                </button>
+                </a>
                 <div class="collapse" id="menu-relatorios">
                     <div class="nav-submenu">
                         <a th:href="@{/relatorios/estrategicos}" class="nav-submenu-link">Visão Geral</a>

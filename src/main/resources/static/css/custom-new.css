@@ -373,11 +373,21 @@ body.sidebar-collapsed #sidebar {
 
 body.sidebar-collapsed .sidebar-brand-text,
 body.sidebar-collapsed .nav-link-text,
-body.sidebar-collapsed .nav-chevron,
+body.sidebar-collapsed .nav-chevron {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+}
+
+/* Bug fix: Remover espaço do título da seção no estado colapsado */
 body.sidebar-collapsed .sidebar-section-label {
     opacity: 0;
     pointer-events: none;
     width: 0;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
 }
 
 /* Bug fix: submenu oculto no estado colapsado — remover espaçamento */
